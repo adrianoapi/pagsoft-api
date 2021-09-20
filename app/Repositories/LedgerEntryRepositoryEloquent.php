@@ -47,6 +47,10 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
             $model = $model->skip((int)$offset);
         }
 
-        return $model->paginate($this->perPage);
+        $model = $model->paginate($this->perPage);
+
+        $model->appends(request()->input())->links();
+
+        return response()->json($model);
     }
 }

@@ -31,18 +31,9 @@ class LedgerEntry extends Model
         return $this->attributes['entry_date'] = date("Y-m-d", strtotime($date));
     }
 
-    public function getEntryDateAttribute($value)
-    {
-        return $this->attributes['entry_date'] = date("d/m/Y", strtotime($value));
-    }
-
     public function setAmountAttribute($value)
     {
         return $this->attributes['amount'] = str_replace(',', '.', str_replace('.', '', $value));
     }
 
-    public function getAmountAttribute($value)
-    {
-        return $this->attributes['amount'] = number_format($value, 2, ",", ".");
-    }
 }

@@ -9,21 +9,23 @@ use Illuminate\Http\Request;
 
 class LedgerEntryController extends Controller
 {
-    public function index(LedgerEntryRepositoryInterface $repository)
+    private $repository;
+
+    public function __construct(LedgerEntryRepositoryInterface $repository)
     {
-        /*$description = request('description');
-        $ledgerEntries = LedgerEntry::where('description', 'like', '%' . $description . '%')
-        ->orderBy('entry_date', 'desc')
-        ->paginate(20);
+        $this->repository = $repository;
+    }
 
-        $ledgerEntries->appends(request()->input())->links();
-
-        #$ledgerEntries = LedgerEntry::orderBy('entry_date', 'desc')->paginate(20);
-        return response()->json($ledgerEntries);*/
-
-        return response()->json($repository->findBy(
-                ['description' => request('description')],
-                ['entry_date' => 'desc', 'description' => 'asc'],
+    public function index()
+    {
+        return response()->json($this->repository->findBy(
+                [
+                    'description' => request('description')
+                ],
+                [
+                    'entry_date' => 'desc',
+                    'description' => 'asc'
+                ],
                 request('limit')
             )
         );
