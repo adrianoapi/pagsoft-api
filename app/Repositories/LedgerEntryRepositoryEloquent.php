@@ -8,6 +8,7 @@ use App\LedgerEntry;
 class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 {
 	private $model;
+    private $perPage = 10;
 
 	public function __construct(LedgerEntry $model)
 	{
@@ -35,14 +36,17 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
             }
         }
 
-        if (!empty($limit)) {
-            $model = $model->take((int)$limit);
+        if(!empty($limit))
+        {
+            if($limit > 0 && $limit <= 20){
+                $this->perPage =  (int)$limit;
+            }
         }
 
         if (!empty($offset)) {
             $model = $model->skip((int)$offset);
         }
 
-        return $model->get();
+        return $model->paginate($this->perPage);
     }
 }

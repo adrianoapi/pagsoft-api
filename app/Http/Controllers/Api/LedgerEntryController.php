@@ -20,11 +20,11 @@ class LedgerEntryController extends Controller
 
         #$ledgerEntries = LedgerEntry::orderBy('entry_date', 'desc')->paginate(20);
         return response()->json($ledgerEntries);*/
-        $description = request('description');
+
         return response()->json($repository->findBy(
                 ['description' => request('description')],
                 ['entry_date' => 'desc', 'description' => 'asc'],
-                10
+                request('limit')
             )
         );
     }
