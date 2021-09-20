@@ -13,7 +13,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            'App\Repositories\Contracts\LedgerEntryRepositoryInterface',
+            'App\Repositories\LedgerEntryRepositoryEloquent'
+        );
+
+        // Para chamar ClientRepositoryOutroORM
+        // $this->app->bind(
+        //     'App\Repositories\Contracts\ClientRepositoryInterface',
+        //     'App\Repositories\ClientRepositoryOutroORM'
+        // );
     }
 
     /**
