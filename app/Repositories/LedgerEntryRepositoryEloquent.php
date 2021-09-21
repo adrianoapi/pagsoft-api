@@ -15,6 +15,11 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 		$this->model = $model;
 	}
 
+    public function delete()
+    {
+
+    }
+
     public function update(array $data, int $id)
     {
         try{

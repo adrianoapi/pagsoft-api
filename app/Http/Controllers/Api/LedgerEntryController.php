@@ -16,6 +16,11 @@ class LedgerEntryController extends Controller
         $this->repository = $repository;
     }
 
+    public function delete()
+    {
+        //
+    }
+
     public function edit(Request $request)
     {
         $data = $request->json()->all();
@@ -35,7 +40,7 @@ class LedgerEntryController extends Controller
                     'description' => request('description')
                 ],
                 [
-                    'entry_date' => 'desc',
+                    'id' => 'desc',
                     'description' => 'asc'
                 ],
                 request('limit')
