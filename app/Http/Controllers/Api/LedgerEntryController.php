@@ -16,6 +16,12 @@ class LedgerEntryController extends Controller
         $this->repository = $repository;
     }
 
+    public function create(Request $request)
+    {
+        $data = $request->json()->all();
+        return response()->json($this->repository->store($data));
+    }
+
     public function index()
     {
         return response()->json($this->repository->findBy(

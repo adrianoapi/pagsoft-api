@@ -15,6 +15,31 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 		$this->model = $model;
 	}
 
+    public function store(array $data)
+    {
+        try{
+            $model = $this->model;
+            $data  = array_merge($data, ['user_id' => auth('api')->user()->id]);
+
+            $model->ledger_group_id = 12;
+            $model->transition_type_id = 1;
+            $model->description = "Almoço cc Neon";
+            $model->entry_date = "2016-09-20";
+            $model->amount = "30.50";
+            $model->installments = 0;
+            $model->user_id = 1;
+
+            if($model->save()){
+                return ['status' => true, 'msg' => 'Create Success!'];
+            }
+         }
+         catch(\Exception $e){
+            return ['status' => false, 'msg' => $e->getMessage()];
+         }
+
+
+    }
+
 	public function findAll()
 	{
 		return $this->model->all();
