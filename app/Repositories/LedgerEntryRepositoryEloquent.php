@@ -15,13 +15,22 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 		$this->model = $model;
 	}
 
-    public function update(array $data)
+    public function update(array $data, int $id)
     {
         try{
-            $model = $this->model;
+            $model = $this->model::findOrFail($id);
+            $model->ledger_group_id    = $data['ledger_group_id'   ];
+            $model->transition_type_id = $data['transition_type_id'];
+            $model->description        = $data['description'       ];
+            $model->entry_date         = $data['entry_date'        ];
+            $model->amount             = $data['amount'            ];
+            $model->installments       = $data['installments'      ];
+            $model->save();
+
+            return ['status' => true, 'msg' => 'Update Successful!', 'data' => $model];
         }
         catch(\Exception $e){
-
+            return ['status' => false, 'msg' => $e->getMessage()];
         }
     }
 
@@ -40,7 +49,7 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
             $model->user_id            = $data['user_id'           ];
             $model->save();
 
-            return ['status' => true, 'msg' => 'Create Success!'];
+            return ['status' => true, 'msg' => 'Create Successful!'];
         }
         catch(\Exception $e){
             return ['status' => false, 'msg' => $e->getMessage()];

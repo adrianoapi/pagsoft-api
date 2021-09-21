@@ -16,10 +16,10 @@ class LedgerEntryController extends Controller
         $this->repository = $repository;
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-        //$data = $request->json()->all();
-        //return $this->repository->update($data);
+        $data = $request->json()->all();
+        return $this->repository->update($data, $request->ledgerEntry);
     }
 
     public function create(Request $request)
