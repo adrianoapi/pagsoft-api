@@ -12,7 +12,7 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 
 	public function __construct(LedgerEntry $model)
 	{
-		$this->model = $model;
+        $this->model = $model;
 	}
 
     public function getCollectionById(int $id)

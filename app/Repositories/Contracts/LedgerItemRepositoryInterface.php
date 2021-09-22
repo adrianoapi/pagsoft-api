@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface LedgerEntryRepositoryInterface
+interface LedgerItemRepositoryInterface
 {
     public function getCollectionById(int $id);
 
