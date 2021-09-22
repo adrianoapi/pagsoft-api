@@ -120,6 +120,6 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 
         $model->appends(request()->input())->links();
 
-        return response()->json($model);
+        return response()->json($model, 200);
     }
 }

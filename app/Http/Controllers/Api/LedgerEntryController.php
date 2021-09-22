@@ -18,17 +18,10 @@ class LedgerEntryController extends Controller
 
     public function index()
     {
-        return response()->json($this->repository->findBy(
-                [
-                    'description' => request('description')
-                ],
-                [
-                    'id' => 'desc',
-                    'description' => 'asc'
-                ],
-                request('limit')
-            )
-        );
+        $condition = ['description' => request('description')];
+        $orderBy   = ['id' => 'desc', 'description' => 'asc' ];
+
+        return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
 
     public function create(Request $request)
