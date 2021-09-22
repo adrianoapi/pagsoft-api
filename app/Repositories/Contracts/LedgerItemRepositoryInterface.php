@@ -4,8 +4,6 @@ namespace App\Repositories\Contracts;
 
 interface LedgerItemRepositoryInterface
 {
-    public function getCollectionById(int $id);
-
     public function delete(int $id);
 
     public function update(array $data, int $id);
