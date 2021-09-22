@@ -24,6 +24,11 @@ class LedgerEntryController extends Controller
         return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
 
+    public function getCollection(Request $request)
+    {
+        return $this->repository->getCollectionById($request->id);
+    }
+
     public function create(Request $request)
     {
         return $this->repository->store($request->json()->all());

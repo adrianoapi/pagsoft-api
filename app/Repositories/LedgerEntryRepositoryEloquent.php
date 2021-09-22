@@ -15,6 +15,34 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 		$this->model = $model;
 	}
 
+    public function getCollectionById(int $id)
+    {
+        $data  = [];
+        $model = $this->model;
+        if($model::where('id', $id)->exists())
+        {
+            $model = $this->model::findOrFail($id);
+
+            $items = [];
+            foreach($model->ledgerItems as $value):
+                $items[] = $value->attributesToArray();
+            endforeach;
+
+            $data = [
+                'collection'     => $model->attributesToArray(),
+                'ledgerGroup'    => $model->ledgerGroup->attributesToArray(),
+                'transitionType' => $model->transitionType->attributesToArray(),
+                'ledgerItems'    => $items
+            ];
+
+            return response()->json($data);
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
+    }
+
     public function delete(int $id)
     {
         $model = $this->model;
