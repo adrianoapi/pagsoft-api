@@ -16,15 +16,15 @@ class LedgerEntryController extends Controller
         $this->repository = $repository;
     }
 
-    public function delete()
+    public function destroy(Request $request)
     {
-        //
+        return $this->repository->delete($request->id);
     }
 
     public function edit(Request $request)
     {
         $data = $request->json()->all();
-        return $this->repository->update($data, $request->ledgerEntry);
+        return $this->repository->update($data, $request->id);
     }
 
     public function create(Request $request)

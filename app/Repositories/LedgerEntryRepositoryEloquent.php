@@ -15,9 +15,29 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
 		$this->model = $model;
 	}
 
-    public function delete()
+    public function delete(int $id)
     {
+        $model = $this->model;
+        if($model::where('id', $id)->exists())
+        {
+            try{
+                $model = $this->model::findOrFail($id);
+                $model->delete();
 
+                return response()->json([
+                    "status" => true,
+                    "message" => "Record Deleted"
+                ], 202);
+            }
+            catch(\Exception $e)
+            {
+                return response()->json(["status" => false, "message" => $e->getMessage()]);
+            }
+        }
+        else
+        {
+            return response()->json(["status" => false, "message" => "Record Not Found!"], 404);
+        }
     }
 
     public function update(array $data, int $id)
