@@ -24,38 +24,43 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
                 $model = $this->model::findOrFail($id);
                 $model->delete();
 
-                return response()->json([
-                    "status" => true,
-                    "message" => "Record Deleted"
-                ], 202);
+                return response()->json(["message" => "Record Deleted"], 202);
             }
             catch(\Exception $e)
             {
-                return response()->json(["status" => false, "message" => $e->getMessage()]);
+                return response()->json(["message" => $e->getMessage()]);
             }
         }
         else
         {
-            return response()->json(["status" => false, "message" => "Record Not Found!"], 404);
+            return response()->json(["message" => "Record Not Found!"], 404);
         }
     }
 
     public function update(array $data, int $id)
     {
-        try{
-            $model = $this->model::findOrFail($id);
-            $model->ledger_group_id    = $data['ledger_group_id'   ];
-            $model->transition_type_id = $data['transition_type_id'];
-            $model->description        = $data['description'       ];
-            $model->entry_date         = $data['entry_date'        ];
-            $model->amount             = $data['amount'            ];
-            $model->installments       = $data['installments'      ];
-            $model->save();
+        $model = $this->model;
+        if($model::where('id', $id)->exists())
+        {
+            try{
+                $model = $this->model::findOrFail($id);
+                $model->ledger_group_id    = $data['ledger_group_id'   ];
+                $model->transition_type_id = $data['transition_type_id'];
+                $model->description        = $data['description'       ];
+                $model->entry_date         = $data['entry_date'        ];
+                $model->amount             = $data['amount'            ];
+                $model->installments       = $data['installments'      ];
+                $model->save();
 
-            return ['status' => true, 'msg' => 'Update Successful!', 'data' => $model];
+                return response()->json(['message' => 'Update Successful!', 'data' => $model], 200);
+            }
+            catch(\Exception $e){
+                return response()->json(['message' => $e->getMessage()]);
+            }
         }
-        catch(\Exception $e){
-            return ['status' => false, 'msg' => $e->getMessage()];
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
         }
     }
 
@@ -63,21 +68,19 @@ class LedgerEntryRepositoryEloquent implements LedgerEntryRepositoryInterface
     {
         try{
             $model = $this->model;
-            $data  = array_merge($data, ['user_id' => auth('api')->user()->id]);
-
             $model->ledger_group_id    = $data['ledger_group_id'   ];
             $model->transition_type_id = $data['transition_type_id'];
             $model->description        = $data['description'       ];
             $model->entry_date         = $data['entry_date'        ];
             $model->amount             = $data['amount'            ];
             $model->installments       = $data['installments'      ];
-            $model->user_id            = $data['user_id'           ];
+            $model->user_id            = auth('api')->user()->id;
             $model->save();
 
-            return ['status' => true, 'msg' => 'Create Successful!'];
+            return response()->json(["id" => $model->id, 'message' => 'Created Successful!'], 201);
         }
         catch(\Exception $e){
-            return ['status' => false, 'msg' => $e->getMessage()];
+            return response()->json(['message' => $e->getMessage()]);
         }
     }
 
