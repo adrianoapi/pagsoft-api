@@ -22,21 +22,21 @@ Route::post('auth/login', 'Api\\AuthController@login');
 
 Route::group(['middleware' => ['apiJwt']], function(){
 
-    Route::get('auth/collection', 'Api\\UserController@getCollection');
-    Route::post('auth/logout', 'Api\\AuthController@logout');
-    Route::get('auth/me', 'Api\\AuthController@me');
-    Route::get('users', 'Api\\UserController@index');
+    Route::get ('auth/collection', 'Api\\UserController@getCollection');
+    Route::post('auth/logout',     'Api\\AuthController@logout');
+    Route::get ('auth/me',         'Api\\AuthController@me');
+    Route::get ('users',           'Api\\UserController@index');
 
-    Route::get ('ledgerEntries/',              'Api\\LedgerEntryController@index' );
-    Route::get ('ledgerEntries/collection/{id}',              'Api\\LedgerEntryController@getCollection' );
-    Route::post('ledgerEntries/',              'Api\\LedgerEntryController@create');
-    Route::put('ledgerEntries/{id}',  'Api\\LedgerEntryController@edit');
+    Route::get ('ledgerEntries/',                'Api\\LedgerEntryController@index' );
+    Route::get ('ledgerEntries/{id}',            'Api\\LedgerEntryController@findById');
+    Route::get ('ledgerEntries/collection/{id}', 'Api\\LedgerEntryController@getCollection' );
+    Route::post('ledgerEntries/',                'Api\\LedgerEntryController@create');
+    Route::put ('ledgerEntries/{id}',            'Api\\LedgerEntryController@edit');
 
     Route::delete('ledgerEntries/{id}', 'Api\\LedgerEntryController@destroy');
 
-
-
-
-    Route::get ('ledgerItems/', 'Api\\LedgerItemController@index' );
+    Route::get ('ledgerItems/',     'Api\\LedgerItemController@index');
+    Route::get ('ledgerItems/{id}', 'Api\\LedgerItemController@findById');
+    Route::post('ledgerItems/',     'Api\\LedgerItemController@create');
 });
 

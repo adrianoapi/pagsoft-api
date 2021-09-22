@@ -4,6 +4,26 @@ namespace App\Repositories;
 
 class UtilEloquent
 {
+    public function findById(int $id)
+    {
+        $model = $this->model;
+        if($model::where('id', $id)->exists())
+        {
+            try{
+                $model = $this->model::findOrFail($id);
+                return response()->json($model, 200);
+            }
+            catch(\Exception $e)
+            {
+                return response()->json(["message" => $e->getMessage()]);
+            }
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
+    }
+
     public function findAll()
 	{
 		return $this->model->all();
@@ -41,5 +61,15 @@ class UtilEloquent
         $model->appends(request()->input())->links();
 
         return response()->json($model, 200);
+    }
+
+    public function factoreStructure(object $data)
+    {
+        $items = [];
+        foreach($data as $value):
+            $items[] = $value->attributesToArray();
+        endforeach;
+
+        return $items;
     }
 }

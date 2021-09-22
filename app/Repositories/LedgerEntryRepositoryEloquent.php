@@ -23,17 +23,11 @@ class LedgerEntryRepositoryEloquent extends UtilEloquent implements LedgerEntryR
         if($model::where('id', $id)->exists())
         {
             $model = $this->model::findOrFail($id);
-
-            $items = [];
-            foreach($model->ledgerItems as $value):
-                $items[] = $value->attributesToArray();
-            endforeach;
-
-            $data = [
+            $data  = [
                 'collection'     => $model->attributesToArray(),
                 'ledgerGroup'    => $model->ledgerGroup->attributesToArray(),
                 'transitionType' => $model->transitionType->attributesToArray(),
-                'ledgerItems'    => $items
+                'ledgerItems'    => $this->factoreStructure($model->ledgerItems),
             ];
 
             return response()->json($data);
