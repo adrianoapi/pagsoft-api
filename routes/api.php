@@ -39,5 +39,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get ('ledgerItems/{id}', 'Api\\LedgerItemController@findById');
     Route::post('ledgerItems/',     'Api\\LedgerItemController@create');
     Route::put ('ledgerItems/{id}', 'Api\\LedgerItemController@edit');
+
+    Route::delete('ledgerItems/{id}', 'Api\\LedgerItemController@destroy');
 });
 

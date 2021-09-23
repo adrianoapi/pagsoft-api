@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 class UtilEloquent
 {
+    protected $model;
+    protected $perPage = 10;
+
     public function findById(int $id)
     {
         $model = $this->model;

@@ -38,4 +38,9 @@ class LedgerItemController extends Controller
     {
         return $this->repository->update($request->json()->all(), $request->id);
     }
+
+    public function destroy(Request $request)
+    {
+        return $this->repository->delete($request->id);
+    }
 }

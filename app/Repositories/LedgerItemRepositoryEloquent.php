@@ -8,9 +8,6 @@ use App\LedgerItem;
 
 class LedgerItemRepositoryEloquent extends UtilEloquent implements LedgerItemRepositoryInterface
 {
-    protected $model;
-    protected $perPage = 10;
-
 	public function __construct(LedgerItem $model)
 	{
         $this->model = $model;
@@ -42,8 +39,7 @@ class LedgerItemRepositoryEloquent extends UtilEloquent implements LedgerItemRep
 
     public function update(array $data, int $id)
     {
-        $model = $this->model;
-        if($model::where('id', $id)->exists() && $this->checkAuthority($data['ledger_entry_id']))
+        if($this->model::where('id', $id)->exists() && $this->checkAuthority($data['ledger_entry_id']))
         {
             $model = $this->model::findOrFail($id);
             try{
@@ -68,7 +64,29 @@ class LedgerItemRepositoryEloquent extends UtilEloquent implements LedgerItemRep
 
     public function delete(int $id)
     {
-        //
+        if(
+            $this->model::whereHas('ledgerEntry', function($q){
+            $q->where('user_id', auth('api')->user()->id);
+            })
+            ->where('id', $id)
+            ->exists()
+        )
+        {
+            try{
+                $model = $this->model::findOrFail($id);
+                $model->delete();
+
+                return response()->json(["message" => "Record Deleted"], 202);
+            }
+            catch(\Exception $e)
+            {
+                return response()->json(["message" => $e->getMessage()]);
+            }
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
     }
 
     public function checkAuthority(int $ledger_entry_id)
