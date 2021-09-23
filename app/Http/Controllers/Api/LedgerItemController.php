@@ -33,4 +33,9 @@ class LedgerItemController extends Controller
     {
         return $this->repository->store($request->json()->all());
     }
+
+    public function edit(Request $request)
+    {
+        return $this->repository->update($request->json()->all(), $request->id);
+    }
 }
