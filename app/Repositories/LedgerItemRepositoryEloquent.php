@@ -17,47 +17,47 @@ class LedgerItemRepositoryEloquent extends UtilEloquent implements LedgerItemRep
 	}
     public function store(array $data)
     {
-        try{
-            $model = $this->model;
-            $model->ledger_entry_id = $data['ledger_entry_id'];
-            $model->description     = $data['description'    ];
-            $model->quantity        = $data['quantity'       ];
-            $model->price           = $data['price'          ];
-            $model->total_price     = $data['total_price'    ];
-            $model->save();
+        if($this->checkAuthority($data['ledger_entry_id']))
+        {
+            try{
+                $model = $this->model;
+                $model->ledger_entry_id = $data['ledger_entry_id'];
+                $model->description     = $data['description'    ];
+                $model->quantity        = $data['quantity'       ];
+                $model->price           = $data['price'          ];
+                $model->total_price     = $data['total_price'    ];
+                $model->save();
 
-            return response()->json(["id" => $model->id, 'message' => 'Created Successful!'], 201);
+                return response()->json(["id" => $model->id, 'message' => 'Created Successful!'], 201);
+            }
+            catch(\Exception $e){
+                return response()->json(['message' => $e->getMessage()]);
+            }
         }
-        catch(\Exception $e){
-            return response()->json(['message' => $e->getMessage()]);
+        else{
+            return response()->json(["message" => "Record 'ledger_entry_id' Not Found!"], 404);
         }
+
     }
 
     public function update(array $data, int $id)
     {
         $model = $this->model;
-        if($model::where('id', $id)->exists())
+        if($model::where('id', $id)->exists() && $this->checkAuthority($data['ledger_entry_id']))
         {
             $model = $this->model::findOrFail($id);
-            if($model->ledgerEntry->user_id == auth('api')->user()->id)
-            {
-                try{
-                    $model->ledger_entry_id = $data['ledger_entry_id'];
-                    $model->description     = $data['description'    ];
-                    $model->quantity        = $data['quantity'       ];
-                    $model->price           = $data['price'          ];
-                    $model->total_price     = $data['total_price'    ];
-                    $model->save();
+            try{
+                $model->ledger_entry_id = $data['ledger_entry_id'];
+                $model->description     = $data['description'    ];
+                $model->quantity        = $data['quantity'       ];
+                $model->price           = $data['price'          ];
+                $model->total_price     = $data['total_price'    ];
+                $model->save();
 
-                    return response()->json(['message' => 'Update Successful!', 'data' => $model], 200);
-                }
-                catch(\Exception $e){
-                    return response()->json(['message' => $e->getMessage()]);
-                }
+                return response()->json(['message' => 'Update Successful!', 'data' => $model], 200);
             }
-            else
-            {
-                return response()->json(['message' => 'Unauthorized!'], 401);
+            catch(\Exception $e){
+                return response()->json(['message' => $e->getMessage()]);
             }
         }
         else
@@ -69,5 +69,10 @@ class LedgerItemRepositoryEloquent extends UtilEloquent implements LedgerItemRep
     public function delete(int $id)
     {
         //
+    }
+
+    public function checkAuthority(int $ledger_entry_id)
+    {
+        return \App\LedgerEntry::where('id', $ledger_entry_id)->where('user_id', auth('api')->user()->id)->exists();
     }
 }
