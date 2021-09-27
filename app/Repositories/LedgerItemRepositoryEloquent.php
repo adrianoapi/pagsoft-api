@@ -66,7 +66,7 @@ class LedgerItemRepositoryEloquent extends UtilEloquent implements LedgerItemRep
     {
         if(
             $this->model::whereHas('ledgerEntry', function($q){
-            $q->where('user_id', auth('api')->user()->id);
+                $q->where('user_id', auth('api')->user()->id);
             })
             ->where('id', $id)
             ->exists()

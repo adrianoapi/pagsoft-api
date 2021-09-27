@@ -20,7 +20,7 @@ class LedgerEntryRepositoryEloquent extends UtilEloquent implements LedgerEntryR
     {
         $data  = [];
         $model = $this->model;
-        if($model::where('id', $id)->exists())
+        if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
         {
             $model = $this->model::findOrFail($id);
             $data  = [
@@ -41,7 +41,7 @@ class LedgerEntryRepositoryEloquent extends UtilEloquent implements LedgerEntryR
     public function delete(int $id)
     {
         $model = $this->model;
-        if($model::where('id', $id)->exists())
+        if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
         {
             try{
                 $model = $this->model::findOrFail($id);
@@ -63,7 +63,7 @@ class LedgerEntryRepositoryEloquent extends UtilEloquent implements LedgerEntryR
     public function update(array $data, int $id)
     {
         $model = $this->model;
-        if($model::where('id', $id)->exists())
+        if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
         {
             try{
                 $model = $this->model::findOrFail($id);
