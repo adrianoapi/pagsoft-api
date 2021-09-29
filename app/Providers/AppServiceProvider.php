@@ -23,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\LedgerItemRepositoryEloquent'
         );
 
+        $this->app->bind(
+            'App\Repositories\Contracts\CollectionRepositoryInterface',
+            'App\Repositories\CollectionRepositoryEloquent'
+        );
+
         // Para chamar ClientRepositoryOutroORM
         // $this->app->bind(
         //     'App\Repositories\Contracts\ClientRepositoryInterface',

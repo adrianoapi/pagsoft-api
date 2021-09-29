@@ -75,4 +75,26 @@ class UtilEloquent
 
         return $items;
     }
+
+    public function delete(int $id)
+    {
+        $model = $this->model;
+        if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
+        {
+            try{
+                $model = $this->model::findOrFail($id);
+                $model->delete();
+
+                return response()->json(["message" => "Record Deleted"], 202);
+            }
+            catch(\Exception $e)
+            {
+                return response()->json(["message" => $e->getMessage()]);
+            }
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
+    }
 }
