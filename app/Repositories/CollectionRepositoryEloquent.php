@@ -18,7 +18,22 @@ class CollectionRepositoryEloquent extends UtilEloquent implements CollectionRep
 
     public function getCollectionById(int $id)
     {
+        $data  = [];
+        $model = $this->model;
+        if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
+        {
+            $model = $this->model::findOrFail($id);
+            $data  = [
+                'collection' => $model->attributesToArray(),
+                'items'      => $this->factoreStructure($model->items, ['images']),
+            ];
 
+            return response()->json($data);
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
     }
 
     public function update(array $data, int $id)
