@@ -66,11 +66,17 @@ class UtilEloquent
         return response()->json($model, 200);
     }
 
-    public function factoreStructure(object $data)
+    public function factoreStructure(object $data, array $relations = [])
     {
         $items = [];
         foreach($data as $value):
-            $items[] = $value->attributesToArray();
+            if(!empty($relations)){
+                foreach($relations as $children):
+                    $items[] = array_merge($value->attributesToArray(), [$children => self::factoreStructure($value->$children)]);
+                endforeach;
+            }else{
+                $items[] = $value->attributesToArray();
+            }
         endforeach;
 
         return $items;
