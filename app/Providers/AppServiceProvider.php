@@ -28,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\CollectionRepositoryEloquent'
         );
 
+        $this->app->bind(
+            'App\Repositories\Contracts\PasswordRepositoryInterface',
+            'App\Repositories\PasswordRepositoryEloquent'
+        );
+
         // Para chamar ClientRepositoryOutroORM
         // $this->app->bind(
         //     'App\Repositories\Contracts\ClientRepositoryInterface',

@@ -49,5 +49,12 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::put ('collections/{id}',            'Api\\CollectionController@edit');
 
     Route::delete('collections/{id}', 'Api\\CollectionController@destroy');
+
+
+    Route::get ('password/',                'Api\\PasswordController@index');
+    Route::post('password/',                'Api\\PasswordController@create');
+    Route::put ('password/{id}',            'Api\\PasswordController@edit');
+
+    Route::delete('password/{id}', 'Api\\PasswordController@destroy');
 });
 
