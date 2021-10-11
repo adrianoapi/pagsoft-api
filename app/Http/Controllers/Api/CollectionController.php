@@ -18,7 +18,7 @@ class CollectionController extends Controller
 
     public function index()
     {
-        $condition = ['description' => request('description')];
+        $condition = ['title' => request('title')];
         $orderBy   = ['id' => 'desc', 'description' => 'asc' ];
 
         return $this->repository->findBy($condition, $orderBy, request('limit'));

@@ -40,6 +40,9 @@ class UtilEloquent
             foreach ($criteria as $condition => $value) {
                 $model = $model->where($condition,'like','%'.$value.'%');
             }
+            $model = $model->where('user_id', auth('api')->user()->id);
+        }else{
+            $model = $model->where('user_id', auth('api')->user()->id);
         }
 
         if(!empty($orderBy)){
