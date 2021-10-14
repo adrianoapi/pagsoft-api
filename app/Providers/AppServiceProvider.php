@@ -29,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            'App\Repositories\Contracts\CollectionItemRepositoryInterface',
+            'App\Repositories\CollectionItemRepositoryEloquent'
+        );
+
+        $this->app->bind(
             'App\Repositories\Contracts\PasswordRepositoryInterface',
             'App\Repositories\PasswordRepositoryEloquent'
         );
