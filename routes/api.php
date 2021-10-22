@@ -53,6 +53,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
     # password
     Route::get ('password/',                'Api\\PasswordController@index');
+    Route::get ('password/{id}',            'Api\\PasswordController@findById');
     Route::post('password/',                'Api\\PasswordController@create');
     Route::put ('password/{id}',            'Api\\PasswordController@edit');
 
