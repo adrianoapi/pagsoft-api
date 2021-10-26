@@ -71,5 +71,8 @@ Route::group(['middleware' => ['apiJwt']], function(){
     # TransitionType
     Route::get('transitionType/list', 'Api\\TransitionTypeController@list');
 
+    # LedgerGroupController
+    Route::get('ledgerGroup/list', 'Api\\LedgerGroupController@list');
+
 });
 
