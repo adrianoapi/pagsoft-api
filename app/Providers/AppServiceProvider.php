@@ -48,6 +48,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\LedgerGroupRepositoryEloquent'
         );
 
+        $this->app->bind(
+            'App\Repositories\Contracts\FixedCostRepositoryInterface',
+            'App\Repositories\FixedCostRepositoryEloquent'
+        );
+
         // Para chamar ClientRepositoryOutroORM
         // $this->app->bind(
         //     'App\Repositories\Contracts\ClientRepositoryInterface',

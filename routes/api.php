@@ -74,5 +74,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     # LedgerGroupController
     Route::get('ledgerGroup/list', 'Api\\LedgerGroupController@list');
 
+    Route::get('fixedCost/', 'Api\\FixedCostController@index');
+
 });
 
