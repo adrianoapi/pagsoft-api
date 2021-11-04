@@ -19,7 +19,7 @@ class FixedCostController extends Controller
     public function index()
     {
         $condition = ['status' => request('status')];
-        $orderBy   = ['entry_date' => 'desc', 'description' => 'asc'];
+        $orderBy   = ['entry_date' => 'asc', 'description' => 'asc'];
 
         return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
