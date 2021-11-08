@@ -74,7 +74,7 @@ class FixedCostRepositoryEloquent extends UtilEloquent implements FixedCostRepos
             $model->description        = $data['description'       ];
             $model->entry_date         = $data['entry_date'        ];
             $model->amount             = $data['amount'            ];
-            $model->installments       = $data['installments'      ];
+            $model->recurrent          = $data['recurrent'         ];
             $model->user_id            = auth('api')->user()->id;
             $model->save();
 

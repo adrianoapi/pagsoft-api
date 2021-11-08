@@ -23,4 +23,29 @@ class FixedCostController extends Controller
 
         return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
+
+    public function findById(Request $request)
+    {
+        return $this->repository->findById($request->id);
+    }
+
+    public function getCollection(Request $request)
+    {
+        return $this->repository->getCollectionById($request->id);
+    }
+
+    public function create(Request $request)
+    {
+        return $this->repository->store($request->json()->all());
+    }
+
+    public function edit(Request $request)
+    {
+        return $this->repository->update($request->json()->all(), $request->id);
+    }
+
+    public function destroy(Request $request)
+    {
+        return $this->repository->delete($request->id);
+    }
 }
