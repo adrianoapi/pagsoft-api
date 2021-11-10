@@ -51,6 +51,11 @@ class FixedCostController extends Controller
 
     public function trash(Request $request)
     {
-        return $this->repository->trash($request->id);
+        return $this->repository->updateStatus($request->id, FALSE);
+    }
+
+    public function restore(Request $request)
+    {
+        return $this->repository->updateStatus($request->id, TRUE);
     }
 }

@@ -85,14 +85,14 @@ class FixedCostRepositoryEloquent extends UtilEloquent implements FixedCostRepos
         }
     }
 
-    public function trash(int $id)
+    public function updateStatus(int $id, bool $flag)
     {
         $model = $this->model;
         if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
         {
             try{
                 $model = $this->model::findOrFail($id);
-                $model->status = false;
+                $model->status = $flag;
                 $model->save();
 
                 return response()->json(['message' => 'Update Successful!', 'data' => $model], 200);
