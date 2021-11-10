@@ -48,4 +48,9 @@ class FixedCostController extends Controller
     {
         return $this->repository->delete($request->id);
     }
+
+    public function trash(Request $request)
+    {
+        return $this->repository->trash($request->id);
+    }
 }

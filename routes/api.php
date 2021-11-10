@@ -75,13 +75,13 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get('ledgerGroup/list', 'Api\\LedgerGroupController@list');
 
     # FixedCost
-    Route::get ('fixedCost/', 'Api\\FixedCostController@index');
-    Route::get ('fixedCost/',                'Api\\FixedCostController@index');
-    Route::get ('fixedCost/{id}',            'Api\\FixedCostController@findById');
-    Route::post('fixedCost/',                'Api\\FixedCostController@create');
-    Route::put ('fixedCost/{id}',            'Api\\FixedCostController@edit');
+    Route::get ('fixedCost/',           'Api\\FixedCostController@index');
+    Route::get ('fixedCost/',           'Api\\FixedCostController@index');
+    Route::get ('fixedCost/{id}',       'Api\\FixedCostController@findById');
+    Route::post('fixedCost/',           'Api\\FixedCostController@create');
+    Route::put ('fixedCost/{id}',       'Api\\FixedCostController@edit');
+    Route::put ('fixedCost/{id}/trash', 'Api\\FixedCostController@trash');
 
-    Route::delete('fixedCost/{id}', 'Api\\FixedCostController@destroy');
+    Route::delete('fixedCost/{id}',     'Api\\FixedCostController@destroy');
 
 });
-
