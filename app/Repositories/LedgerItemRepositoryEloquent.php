@@ -12,6 +12,29 @@ class LedgerItemRepositoryEloquent extends UtilEloquent implements LedgerItemRep
 	{
         $this->model = $model;
 	}
+
+    public function index($condition, $orderBy, $limit)
+    {
+        if(!empty($limit)){
+            $this->perPage = $limit;
+        }
+
+        try{
+            $result = $this->model::whereHas('LedgerEntry', function($q){
+                $q->where('user_id', auth('api')->user()->id);
+            })
+            ->where('description', 'like', '%' . $condition['description'] . '%')
+            ->orderBy('id', 'desc')
+            ->paginate($this->perPage);
+
+            return response()->json($result, 200);
+        }
+        catch(\Exception $e)
+        {
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
+    }
+
     public function store(array $data)
     {
         if($this->checkAuthority($data['ledger_entry_id']))

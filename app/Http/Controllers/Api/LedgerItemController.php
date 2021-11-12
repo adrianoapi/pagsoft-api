@@ -21,7 +21,7 @@ class LedgerItemController extends Controller
         $condition = ['description' => request('description')];
         $orderBy   = ['id' => 'desc', 'description' => 'asc' ];
 
-        return $this->repository->findBy($condition, $orderBy, request('limit'));
+        return $this->repository->index($condition, $orderBy, request('limit'));
     }
 
     public function findById(Request $request)
