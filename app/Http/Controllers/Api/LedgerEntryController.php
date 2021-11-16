@@ -48,4 +48,9 @@ class LedgerEntryController extends Controller
     {
         return $this->repository->delete($request->id);
     }
+
+    public function flow(Request $request)
+    {
+        return $this->repository->flow($request->json()->all());
+    }
 }
