@@ -51,6 +51,11 @@ class LedgerEntryController extends Controller
 
     public function flow(Request $request)
     {
-        return $this->repository->flow($request->json()->all());
+        $data = [
+            'ledger_group_id' => request('ledger_group_id'),
+            'entry_date_begin' => request('entry_date_begin'),
+            'entry_date_end' => request('entry_date_end'),
+        ];
+        return $this->repository->flow($data);
     }
 }
