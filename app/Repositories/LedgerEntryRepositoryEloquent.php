@@ -126,7 +126,7 @@ class LedgerEntryRepositoryEloquent extends UtilEloquent implements LedgerEntryR
             ])
             ->get();
 
-            return response()->json(['data' => $select], 200);
+            return response()->json($select, 200);
        }
        catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()]);
