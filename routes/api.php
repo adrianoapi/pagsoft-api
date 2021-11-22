@@ -44,9 +44,10 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
     Route::delete('ledgerItems/{id}', 'Api\\LedgerItemController@destroy');
 
-
+    #Collection
     Route::get ('collections/',                'Api\\CollectionController@index');
     Route::get ('collections/collection/{id}', 'Api\\CollectionController@getCollection' );
+    Route::get ('collections/{id}',            'Api\\CollectionController@findById' );
     Route::post('collections/',                'Api\\CollectionController@create');
     Route::put ('collections/{id}',            'Api\\CollectionController@edit');
 
