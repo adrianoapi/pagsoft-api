@@ -88,4 +88,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
     Route::delete('fixedCost/{id}',     'Api\\FixedCostController@destroy');
 
+    # TaskGroupController
+    Route::get('taskGroup', 'Api\\TaskGroupController@index');
+
 });
