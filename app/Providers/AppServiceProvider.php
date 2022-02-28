@@ -58,6 +58,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\TaskGroupRepositoryEloquent'
         );
 
+        $this->app->bind(
+            'App\Repositories\Contracts\TaskRepositoryInterface',
+            'App\Repositories\TaskRepositoryEloquent'
+        );
+
         // Para chamar ClientRepositoryOutroORM
         // $this->app->bind(
         //     'App\Repositories\Contracts\ClientRepositoryInterface',
