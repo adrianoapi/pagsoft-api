@@ -4,14 +4,14 @@ namespace App\Repositories;
 
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use App\Repositories\UtilEloquent;
-use App\TaskGroup;
+use App\Task;
 
 class TaskRepositoryEloquent extends UtilEloquent implements TaskRepositoryInterface
 {
 	protected $model;
     protected $perPage = 10;
 
-	public function __construct(TaskGroup $model)
+	public function __construct(Task $model)
 	{
         $this->model = $model;
 	}
