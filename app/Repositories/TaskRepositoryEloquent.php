@@ -65,6 +65,40 @@ class TaskRepositoryEloquent extends UtilEloquent implements TaskRepositoryInter
         }
     }
 
+    public function update(array $data, int $id)
+    {
+        $model = $this->model;
+        if(
+            $this->model::whereHas('TaskGroup', function($q){
+                $q->where('user_id', auth('api')->user()->id);
+            })
+            ->where('id', $id)
+            ->exists()
+        )
+        {
+            try{
+                $model = $this->model::findOrFail($id);
+                $model->task_group_id = $data['task_group_id'];
+                $model->title         = $data['title'        ];
+                $model->content       = $data['content'      ];
+                $model->status        = $data['status'       ];
+                $model->level         = $data['level'        ];
+                $model->order         = $data['order'        ];
+                $model->archived      = $data['archived'     ];
+                $model->save();
+
+                return response()->json(['message' => 'Update Successful!', 'data' => $model], 200);
+            }
+            catch(\Exception $e){
+                return response()->json(['message' => $e->getMessage()]);
+            }
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
+    }
+
     public function getAll()
     {
         $model = $this->model::all();

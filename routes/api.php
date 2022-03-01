@@ -92,10 +92,11 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get('taskGroup', 'Api\\TaskGroupController@index');
 
     # TaskController
-    Route::get ('task',      'Api\\TaskController@index');
-    Route::post('task',      'Api\\TaskController@create');
-    Route::get ('task/{id}', 'Api\\TaskController@findById');
+    Route::get ('task',             'Api\\TaskController@index');
+    Route::post('task',             'Api\\TaskController@create');
+    Route::get ('task/{id}',        'Api\\TaskController@findById');
+    Route::put ('task/{id}/update', 'Api\\TaskController@update');
 
-    Route::delete('task', 'Api\\TaskController@destroy');
+    Route::delete('task/delete', 'Api\\TaskController@destroy');
 
 });

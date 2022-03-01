@@ -40,6 +40,11 @@ class TaskController extends Controller
         return $this->repository->store($request->json()->all());
     }
 
+    public function update(Request $request)
+    {
+        return $this->repository->update($request->json()->all(), $request->id);
+    }
+
     public function destroy(Request $request)
     {
         return $this->repository->delete($request->id);
