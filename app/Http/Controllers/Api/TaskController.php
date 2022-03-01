@@ -18,9 +18,30 @@ class TaskController extends Controller
 
     public function index()
     {
-        #$condition = ['description' => request('description')];
-        #$orderBy   = ['entry_date' => 'desc', 'description' => 'asc'];
+        $condition = [
+            'title'         => request('title'        ),
+            'status'        => request('status'       ),
+            'level'         => request('level'        ),
+            'task_group_id' => request('task_group_id'),
+        ];
+        
+        $orderBy   = ['entry_date' => 'asc', 'description' => 'asc'];
 
-        return $this->repository->getAll();
+        return $this->repository->findBy($condition, $orderBy, request('limit'));
+    }
+
+    public function findById(Request $request)
+    {
+        return $this->repository->findById($request->id);
+    }
+
+    public function create(Request $request)
+    {
+        return $this->repository->store($request->json()->all());
+    }
+
+    public function destroy(Request $request)
+    {
+        return $this->repository->delete($request->id);
     }
 }
