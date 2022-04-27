@@ -115,16 +115,28 @@ class LedgerEntryRepositoryEloquent extends UtilEloquent implements LedgerEntryR
         $id    = $data['ledger_group_id' ];
 
        try{
-            $select = DB::table('ledger_entries')
-            ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
-            ->select(DB::raw('sum( ledger_entries.amount ) as total'))
-            ->where([
-                ['transition_types.action', 'expensive'],
-                ['ledger_entries.ledger_group_id', $id],
-                ['ledger_entries.entry_date', '>=', $begin],
-                ['ledger_entries.entry_date', '<=', $end]
-            ])
-            ->get();
+            if($id){
+                $select = DB::table('ledger_entries')
+                ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+                ->select(DB::raw('sum( ledger_entries.amount ) as total'))
+                ->where([
+                    ['transition_types.action', 'expensive'],
+                    ['ledger_entries.ledger_group_id', $id],
+                    ['ledger_entries.entry_date', '>=', $begin],
+                    ['ledger_entries.entry_date', '<=', $end]
+                ])
+                ->get();
+            }else{
+                $select = DB::table('ledger_entries')
+                ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+                ->select(DB::raw('sum( ledger_entries.amount ) as total'))
+                ->where([
+                    ['transition_types.action', 'expensive'],
+                    ['ledger_entries.entry_date', '>=', $begin],
+                    ['ledger_entries.entry_date', '<=', $end]
+                ])
+                ->get();
+            }
 
             return response()->json($select, 200);
        }
