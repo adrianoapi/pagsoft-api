@@ -19,8 +19,8 @@ class CreateEvents extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name', 120);
             $table->string('location', 120)->nullable(true);
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');

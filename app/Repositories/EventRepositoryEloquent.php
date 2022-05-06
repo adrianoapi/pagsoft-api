@@ -16,9 +16,13 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
         $this->model = $model;
 	}
 
+    public function index($condition, $orderBy, $limit)
+    {
+        return $this->findBy($condition, $orderBy, $limit);
+    }
+
     public function store(array $data)
     {
-        dd($data);
         try{
             $model = $this->model;
             $model->user_id    = auth('api')->user()->id;
