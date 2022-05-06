@@ -29,8 +29,12 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
             $model->title    = $data['title'   ];
             $model->start    = $data['start'   ];
             $model->end      = $data['end'     ];
+            $model->editable = $data['editable'];
             $model->all_day  = $data['all_day' ];
             $model->location = $data['location'];
+
+            $model->backgroundColor  = $data['backgroundColor' ];
+            
             $model->save();
 
             return response()->json(["id" => $model->id, "message" => "Created Successful!", "body" => $model->getAttributes()], 201);
@@ -50,8 +54,12 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
                 $model->title    = $data['title'   ];
                 $model->start    = $data['start'   ];
                 $model->end      = $data['end'     ];
+                $model->editable = $data['editable'];
                 $model->all_day  = $data['all_day' ];
                 $model->location = $data['location'];
+
+                $model->backgroundColor  = $data['backgroundColor' ];
+
                 $model->save();
 
                 return response()->json(['message' => 'Update Successful!', "body" => $model->getAttributes()], 200);

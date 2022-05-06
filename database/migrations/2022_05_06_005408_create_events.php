@@ -20,6 +20,8 @@ class CreateEvents extends Migration
             $table->string('title', 120);
             $table->dateTime('start');
             $table->dateTime('end');
+            $table->string('backgroundColor', 10)->nullable(true);
+            $table->boolean('editable')->default(true);
             $table->boolean('all_day')->default(false);
             $table->string('location', 120)->nullable(true);
             $table->timestamps();
