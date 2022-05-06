@@ -24,8 +24,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $condition = ['name' => request('name')];
-        $orderBy   = ['start_date' => 'asc' ];
+        $condition = ['title' => request('title')];
+        $orderBy   = ['start' => 'asc' ];
 
         return $this->repository->index($condition, $orderBy, request('limit'));
     }

@@ -25,11 +25,12 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
     {
         try{
             $model = $this->model;
-            $model->user_id    = auth('api')->user()->id;
-            $model->name       = $data['name'      ];
-            $model->location   = $data['location'  ];
-            $model->start_date = $data['start_date'];
-            $model->end_date   = $data['end_date'  ];
+            $model->user_id  = auth('api')->user()->id;
+            $model->title    = $data['title'   ];
+            $model->start    = $data['start'   ];
+            $model->end      = $data['end'     ];
+            $model->all_day  = $data['all_day' ];
+            $model->location = $data['location'];
             $model->save();
 
             return response()->json(["id" => $model->id, 'message' => 'Created Successful!'], 201);
