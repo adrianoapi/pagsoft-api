@@ -33,11 +33,36 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
             $model->location = $data['location'];
             $model->save();
 
-            return response()->json(["id" => $model->id, 'message' => 'Created Successful!'], 201);
+            return response()->json(["id" => $model->id, "message" => "Created Successful!", "body" => $model->getAttributes()], 201);
         }
         catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()]);
         }
+    }
 
+    public function update(array $data, int $id)
+    {
+        $model = $this->model;
+        if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
+        {
+            try{
+                $model = $this->model::findOrFail($id);
+                $model->title    = $data['title'   ];
+                $model->start    = $data['start'   ];
+                $model->end      = $data['end'     ];
+                $model->all_day  = $data['all_day' ];
+                $model->location = $data['location'];
+                $model->save();
+
+                return response()->json(['message' => 'Update Successful!', "body" => $model->getAttributes()], 200);
+            }
+            catch(\Exception $e){
+                return response()->json(['message' => $e->getMessage()]);
+            }
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
     }
 }
