@@ -9,7 +9,7 @@ use App\Event;
 class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInterface
 {
 	protected $model;
-    protected $perPage = 10;
+    protected $perPage = 100;
 
 	public function __construct(Event $model)
 	{
