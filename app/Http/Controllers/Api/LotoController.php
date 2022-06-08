@@ -36,7 +36,8 @@ class LotoController extends Controller
      */
     function dezenas(array $data)
     {
-        $result = NULL;
+       return implode(" ", $data);
+        /*$result = NULL;
         $i      = 0;
 
         foreach($data as $value):
@@ -45,7 +46,7 @@ class LotoController extends Controller
             $i++;
         endforeach;
 
-        return $result;
+        return $result;*/
     }
 
     function getListaRateioPremio(array $data)
