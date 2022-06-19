@@ -23,6 +23,8 @@ class CreateDiagramsTable extends Migration
             $table->string('title');
             $table->enum('type', ['mindMap', 'class', 'flowChart'])->default('mindMap');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
         });
     }
 

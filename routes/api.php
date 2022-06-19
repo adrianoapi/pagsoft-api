@@ -75,6 +75,9 @@ Route::group(['middleware' => ['apiJwt']], function(){
     # Dashboard
     Route::get ('dashbaord/finance',                'Api\\DashboardController@finance');
 
+    #Diagram
+    Route::get('diagram', 'Api\\DiagramController@index')->name('diagrams.index');
+
     # TransitionType
     Route::get('transitionType/list', 'Api\\TransitionTypeController@list');
 
