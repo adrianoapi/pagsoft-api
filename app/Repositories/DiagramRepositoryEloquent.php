@@ -21,6 +21,26 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
         return $this->findBy($condition, $orderBy, $limit);
     }
 
+    public function getDiagramById(int $id)
+    {
+        $data  = [];
+        $model = $this->model;
+        if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
+        {
+            $model = $this->model::findOrFail($id);
+            $data  = [
+                'diagram' => $model->attributesToArray(),
+                'items'   => $this->factoreStructure($model->items),
+            ];
+
+            return response()->json($data);
+        }
+        else
+        {
+            return response()->json(["message" => "Record Not Found!"], 404);
+        }
+    }
+
     public function store(array $data)
     {
         try{

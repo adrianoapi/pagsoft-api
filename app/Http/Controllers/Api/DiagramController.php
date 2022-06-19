@@ -26,7 +26,7 @@ class DiagramController extends Controller
 
     public function findById(Request $request)
     {
-        return $this->repository->findById($request->id);
+        return $this->repository->getDiagramById($request->id);
     }
 
     public function getCollection(Request $request)
