@@ -9,7 +9,7 @@ class LotoController extends Controller
 {
     public function index(Request $request)
     {
-        $result = $this->getResult($request->jogo);
+        $result = $this->getResult($request->jogo, $request->concurso);
 
         $matriz = [
             'numero' => $result->numero,
