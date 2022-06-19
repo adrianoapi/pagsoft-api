@@ -31,6 +31,7 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
             $data  = [
                 'diagram' => $model->attributesToArray(),
                 'items'   => $this->factoreStructure($model->items),
+                'linkData'   => $this->factoreStructure($model->linkData),
             ];
 
             return response()->json($data);
