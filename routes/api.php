@@ -71,13 +71,15 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::post('collectionItem/',          'Api\\CollectionItemController@create');
     Route::put ('collectionItem/{id}',      'Api\\CollectionItemController@edit');
     Route::delete('collectionItem/{id}',    'Api\\CollectionItemController@destroy');
-
+    
     # Dashboard
     Route::get ('dashbaord/finance',                'Api\\DashboardController@finance');
-
+    
     #Diagram
-    Route::get('diagram', 'Api\\DiagramController@index')->name('diagrams.index');
-    Route::get ('diagram/{id}',      'Api\\DiagramController@findById');
+    Route::get ('diagram',        'Api\\DiagramController@index');
+    Route::post('diagram',        'Api\\DiagramController@create');
+    Route::get ('diagram/{id}',   'Api\\DiagramController@findById');
+    Route::delete('diagram/{id}', 'Api\\DiagramController@destroy');
 
     # TransitionType
     Route::get('transitionType/list', 'Api\\TransitionTypeController@list');
