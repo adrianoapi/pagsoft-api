@@ -79,6 +79,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get ('diagram',        'Api\\DiagramController@index');
     Route::post('diagram',        'Api\\DiagramController@create');
     Route::get ('diagram/{id}',   'Api\\DiagramController@findById');
+    Route::put ('diagram/{id}',   'Api\\DiagramController@edit');
     Route::delete('diagram/{id}', 'Api\\DiagramController@destroy');
 
     # TransitionType
