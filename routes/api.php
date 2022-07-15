@@ -73,7 +73,8 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::delete('collectionItem/{id}',    'Api\\CollectionItemController@destroy');
     
     # Dashboard
-    Route::get ('dashbaord/finance',                'Api\\DashboardController@finance');
+    Route::get ('dashbaord/finance', 'Api\\DashboardController@finance');
+    Route::get ('dashbaord/cart',    'Api\\DashboardController@cart');
     
     #Diagram
     Route::get ('diagram',        'Api\\DiagramController@index');

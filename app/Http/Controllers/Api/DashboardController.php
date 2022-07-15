@@ -53,6 +53,26 @@ class DashboardController extends Controller
         return response()->json($this->legderSort($expensive, $recipe), 200);
     }
 
+    public function cart(Request $request)
+    {
+        $date_begin = date('Y-m-d', strtotime("$this->date_begin -1 year"));
+        $expensive = DB::table('ledger_entries')
+        ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+        ->select(DB::raw('sum( ledger_entries.amount ) as total'), DB::raw("DATE_FORMAT(ledger_entries.entry_date, '%Y-%m') dt_lancamento"))
+        ->where([
+            ['ledger_entries.user_id', $this->user_id],
+            ['transition_types.action', 'expensive'],
+            ['transition_types.credit_card', 1],
+            ['ledger_entries.entry_date', '>=', $date_begin],
+            ['ledger_entries.entry_date', '<=', $this->date_end]
+        ])
+        ->groupBy('dt_lancamento')
+        ->orderByDesc('dt_lancamento')
+        ->get();
+
+        return response()->json($expensive, 200);
+    }
+
     protected function legderSort($expensive, $recipe)
     {
         $dtLancamento    = array();
