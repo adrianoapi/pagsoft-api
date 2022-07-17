@@ -29,7 +29,6 @@ class LotoController extends Controller
 
         $arrContextOptions= [
             'ssl' => [
-                'cafile' => 'cacert.pem',
                 'verify_peer'=> false,
                 'verify_peer_name'=> false,
             ],
