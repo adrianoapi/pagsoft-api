@@ -26,8 +26,22 @@ class LotoController extends Controller
         if(!empty($concurso)){
            $concurso = "/{$concurso}";
         }
-   
-       return json_decode(file_get_contents('https://servicebus2.caixa.gov.br/portaldeloterias/api/'.$jogo.$concurso));
+
+        $arrContextOptions= [
+            'ssl' => [
+                'cafile' => 'cacert.pem',
+                'verify_peer'=> false,
+                'verify_peer_name'=> false,
+            ],
+        ];
+        
+        return json_decode($response = file_get_contents(
+            'https://servicebus2.caixa.gov.br/portaldeloterias/api/'.$jogo.$concurso,
+            false,
+            stream_context_create($arrContextOptions)
+        ));
+        
+        //return json_decode(file_get_contents('https://servicebus2.caixa.gov.br/portaldeloterias/api/'.$jogo.$concurso));
     }
 
         
