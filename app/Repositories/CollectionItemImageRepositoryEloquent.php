@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Contracts\CollectionItemRepositoryInterface;
+use App\Repositories\Contracts\CollectionItemImageRepositoryInterface;
 use App\Repositories\UtilEloquent;
 use App\CollectionItemImage;
 
-class CollectionItemImageRepositoryEloquent extends UtilEloquent implements CollectionItemRepositoryInterface
+class CollectionItemImageRepositoryEloquent extends UtilEloquent implements CollectionItemImageRepositoryInterface
 {
 	protected $model;
     protected $perPage = 10;
