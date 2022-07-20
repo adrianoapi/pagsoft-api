@@ -73,6 +73,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\DiagramRepositoryEloquent'
         );
 
+        $this->app->bind(
+            'App\Repositories\Contracts\CollectionItemImageRepositoryInterface',
+            'App\Repositories\CollectionItemImageRepositoryEloquent'
+        );
+
         // Para chamar ClientRepositoryOutroORM
         // $this->app->bind(
         //     'App\Repositories\Contracts\ClientRepositoryInterface',
