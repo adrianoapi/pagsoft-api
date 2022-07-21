@@ -40,37 +40,16 @@ class CollectionItemImageRepositoryEloquent extends UtilEloquent implements Coll
 
     }
 
-    public function update(array $data, int $id)
-    {
-        if($this->model::where('id', $id)->exists() && $this->checkAuthority($data['collection_id']))
-        {
-            $model = $this->model::findOrFail($id);
-            try{
-                $model->collection_id = $data['collection_id'];
-                $model->description   = $data['description'  ];
-                $model->title         = $data['title'        ];
-                $model->release       = $data['release'      ];
-                $model->save();
-
-                return response()->json(['message' => 'Update Successful!', 'data' => $model], 200);
-            }
-            catch(\Exception $e){
-                return response()->json(['message' => $e->getMessage()]);
-            }
-        }
-        else
-        {
-            return response()->json(["message" => "Record Not Found!"], 404);
-        }
-    }
-
     public function delete(int $id)
     {
+        #Pequisa o id da collection
+        $modelCollectionItem = \App\CollectionItem::findOrFail($id);
+
         if(
             $this->model::whereHas('Collection', function($q){
                 $q->where('user_id', auth('api')->user()->id);
             })
-            ->where('id', $id)
+            ->where('id', $modelCollectionItem->collection_id)
             ->exists()
         )
         {

@@ -74,6 +74,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     
     # CollectionItemImage
     Route::post('collectionItemImage', 'Api\\CollectionItemImageController@create');
+    Route::delete('collectionItemImage/{id}', 'Api\\CollectionItemImageController@destroy');
     
     # Dashboard
     Route::get ('dashbaord/finance', 'Api\\DashboardController@finance');
