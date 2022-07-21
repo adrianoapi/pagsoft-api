@@ -42,32 +42,33 @@ class CollectionItemImageRepositoryEloquent extends UtilEloquent implements Coll
 
     public function delete(int $id)
     {
-        #Pequisa o id da collection
-        $modelCollectionItem = \App\CollectionItem::findOrFail($id);
-
-        if(
-            $this->model::whereHas('Collection', function($q){
-                $q->where('user_id', auth('api')->user()->id);
-            })
-            ->where('id', $modelCollectionItem->collection_id)
-            ->exists()
-        )
+        #Primeiro pega o item image
+        $model = $this->model::findOrFail($id);
+        if(!empty($model))
         {
-            try{
-                $model = $this->model::findOrFail($id);
-                $model->delete();
-
-                return response()->json(["message" => "Record Deleted"], 202);
-            }
-            catch(\Exception $e)
+            if($this->checkAuthority($model->collectionItem->collection->id))
             {
-                return response()->json(["message" => $e->getMessage()]);
+                try{
+                    $model = $this->model::findOrFail($id);
+                    $model->delete();
+
+                    return response()->json(["message" => "Record Deleted"], 202);
+                }
+                catch(\Exception $e)
+                {
+                    return response()->json(["message" => $e->getMessage()]);
+                }
+            }
+            else
+            {
+                return response()->json(["message" => "Record Not Found!"], 404);
             }
         }
         else
         {
             return response()->json(["message" => "Record Not Found!"], 404);
         }
+        
     }
 
     public function checkAuthority(int $collection_id)
