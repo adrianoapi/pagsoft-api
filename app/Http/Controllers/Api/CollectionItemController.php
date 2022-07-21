@@ -26,7 +26,7 @@ class CollectionItemController extends Controller
 
     public function findById(Request $request)
     {
-        return $this->repository->findById($request->id);
+        return $this->repository->findById($request->id, ['images']);
     }
 
     public function create(Request $request)
