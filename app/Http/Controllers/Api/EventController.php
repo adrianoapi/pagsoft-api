@@ -30,6 +30,11 @@ class EventController extends Controller
         return $this->repository->index($condition, $orderBy, request('limit'));
     }
 
+    public function findById(Request $request)
+    {
+        return $this->repository->findById($request->id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
