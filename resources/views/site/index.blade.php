@@ -9,6 +9,8 @@
   <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
 
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Candal">
+  <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
   <link rel="stylesheet" type="text/css" href="{!! asset('assets/css/font-awesome.min.css') !!}">
   <link rel="stylesheet" type="text/css" href="{!! asset('assets/css/bootstrap.min.css') !!}">
   <link rel="stylesheet" type="text/css" href="{!! asset('assets/css/style.css') !!}">
@@ -32,11 +34,11 @@
             </div>
             <div class="collapse navbar-collapse navbar-right" id="myNavbar">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#banner">Home</a></li>
-                <li class=""><a href="#service">Serviços</a></li>
-                <li class=""><a href="#about">Sobre</a></li>
-                <li class=""><a href="#testimonial">Tecnologia</a></li>
-                <li class=""><a href="#contact">Contato</a></li>
+                <li class="active" id="menu-home"><a href="#banner">Home</a></li>
+                <li class="" id="menu-servico"><a href="#service">Serviços</a></li>
+                <li class="" id="menu-sobre"><a href="#about">Sobre</a></li>
+                <li class="" id="menu-tecnologia"><a href="#testimonial">Tecnologia</a></li>
+                <li class="" id="menu-contato"><a href="#contact">Contato</a></li>
               </ul>
             </div>
           </div>
@@ -45,11 +47,8 @@
       <div class="container">
         <div class="row">
           <div class="banner-info">
-            <div class="banner-logo text-center">
-              <img img src="{!! asset('assets/img/logo.png') !!}" class="img-responsive">
-            </div>
             <div class="banner-text text-center">
-              <h1 class="white">DESENVOLVIMENTO DE SOLUÇÕES</h1>
+              <h1 class="white">Desenvolvimento de soluções</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod <br>tempor incididunt ut labore et dolore magna aliqua.</p>
               <a href="#contact" class="btn btn-appoint">Make an Appointment.</a>
             </div>
@@ -447,6 +446,35 @@
   <script img src="{!! asset('assets/js/bootstrap.min.js') !!}"></script>
   <script img src="{!! asset('assets/js/custom.js') !!}"></script>
   <script img src="{!! asset('assets/contactform/contactform.js') !!}"></script>
+
+  <script type="text/javascript">
+    var time = 125;
+    setTimeout(() => {
+        $("#menu-servico" ).addClass( "active" );
+        setTimeout(() => {
+          $("#menu-sobre" ).addClass( "active" );
+          setTimeout(() => {
+            $("#menu-tecnologia" ).addClass( "active" );
+            setTimeout(() => {
+              $("#menu-contato" ).addClass( "active" );
+              setTimeout(() => {
+                $("#menu-contato" ).removeClass( "active" );
+                setTimeout(() => {
+                  $("#menu-tecnologia" ).removeClass( "active" );
+                  setTimeout(() => {
+                    $("#menu-sobre" ).removeClass( "active" );
+                    setTimeout(() => {
+                      $("#menu-servico" ).removeClass( "active" );
+                    }, time);
+                  }, time);
+                }, time);
+              }, time+time);
+            }, time);
+          }, time);
+        }, time);
+    }, 1500);
+
+  </script>
 
 </body>
 
