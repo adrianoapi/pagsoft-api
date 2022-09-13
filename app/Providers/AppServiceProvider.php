@@ -68,6 +68,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\EventRepositoryEloquent'
         );
 
+        $this->app->bind(
+            'App\Repositories\Contracts\ClientRepositoryInterface',
+            'App\Repositories\ClientRepositoryEloquent'
+        );
+
         // Para chamar ClientRepositoryOutroORM
         // $this->app->bind(
         //     'App\Repositories\Contracts\ClientRepositoryInterface',
