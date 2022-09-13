@@ -69,10 +69,6 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-<<<<<<< HEAD
-            'App\Repositories\Contracts\ClientRepositoryInterface',
-            'App\Repositories\ClientRepositoryEloquent'
-=======
             'App\Repositories\Contracts\DiagramRepositoryInterface',
             'App\Repositories\DiagramRepositoryEloquent'
         );
@@ -80,14 +76,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             'App\Repositories\Contracts\CollectionItemImageRepositoryInterface',
             'App\Repositories\CollectionItemImageRepositoryEloquent'
->>>>>>> 43db6ac5a6ba5bcd286c2c036164c183d532bbad
         );
 
-        // Para chamar ClientRepositoryOutroORM
-        // $this->app->bind(
-        //     'App\Repositories\Contracts\ClientRepositoryInterface',
-        //     'App\Repositories\ClientRepositoryOutroORM'
-        // );
+        $this->app->bind(
+            'App\Repositories\Contracts\ClientRepositoryInterface',
+            'App\Repositories\ClientRepositoryEloquent'
+        );
     }
 
     /**
