@@ -22,6 +22,7 @@ Route::post('auth/login', 'Api\\AuthController@login');
 
 # Loto
 Route::get ('loto/resultado/{jogo}',  'Api\\LotoController@index');
+Route::get ('notify',  'Api\\NotifyController@index');
 
 Route::group(['middleware' => ['apiJwt']], function(){
 
@@ -77,13 +78,25 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::post('collectionItem/',          'Api\\CollectionItemController@create');
     Route::put ('collectionItem/{id}',      'Api\\CollectionItemController@edit');
     Route::delete('collectionItem/{id}',    'Api\\CollectionItemController@destroy');
-
+    
+    # CollectionItemImage
+    Route::post('collectionItemImage', 'Api\\CollectionItemImageController@create');
+    Route::delete('collectionItemImage/{id}', 'Api\\CollectionItemImageController@destroy');
+    
     # Dashboard
-    Route::get ('dashbaord/finance',                'Api\\DashboardController@finance');
+    Route::get ('dashbaord/finance', 'Api\\DashboardController@finance');
+    Route::get ('dashbaord/cart',    'Api\\DashboardController@cart');
+    
+    #Diagram
+    Route::get ('diagram',        'Api\\DiagramController@index');
+    Route::post('diagram',        'Api\\DiagramController@create');
+    Route::get ('diagram/{id}',   'Api\\DiagramController@findById');
+    Route::put ('diagram/{id}',   'Api\\DiagramController@edit');
+    Route::delete('diagram/{id}', 'Api\\DiagramController@destroy');
 
     # TransitionType
     Route::get('transitionType/list', 'Api\\TransitionTypeController@list');
-
+    
     # LedgerGroupController
     Route::get('ledgerGroup/list', 'Api\\LedgerGroupController@list');
 
@@ -109,9 +122,10 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
     Route::delete('task/delete', 'Api\\TaskController@destroy');
 
-    # TaskController
-    Route::get ('event',             'Api\\EventController@index');
-    Route::post('event',             'Api\\EventController@create');
+    #EventController
+    Route::get ('event',      'Api\\EventController@index');
+    Route::get ('event/{id}', 'Api\\EventController@findById');
+    Route::post('event',      'Api\\EventController@create');
     Route::put ('event/{id}', 'Api\\EventController@edit');
 
     Route::delete('event/{id}', 'Api\\EventController@destroy');

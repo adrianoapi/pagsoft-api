@@ -7,13 +7,22 @@ class UtilEloquent
     protected $model;
     protected $perPage = 10;
 
-    public function findById(int $id)
+    public function findById(int $id, array $relations = [])
     {
         $model = $this->model;
         if($model::where('id', $id)->exists())
         {
             try{
                 $model = $this->model::findOrFail($id);
+
+                if(!empty($model) && !empty($relations))
+                {
+                    #Injeta os objetos relacionados a matriz
+                    foreach($relations as $relation):
+                        $model->$relation;
+                    endforeach;
+                }
+                
                 return response()->json($model, 200);
             }
             catch(\Exception $e)

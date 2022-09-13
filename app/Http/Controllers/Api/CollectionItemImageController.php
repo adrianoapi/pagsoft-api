@@ -2,32 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Repositories\Contracts\EventRepositoryInterface;
+use App\Repositories\Contracts\CollectionItemImageRepositoryInterface;
 
 use App\Http\Controllers\Controller;
-use App\Event;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class CollectionItemImageController extends Controller
 {
     private $repository;
 
-    public function __construct(EventRepositoryInterface $repository)
+    public function __construct(CollectionItemImageRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $condition = ['title' => request('title')];
-        $orderBy   = ['start' => 'asc' ];
+        $condition = ['description' => request('description')];
+        $orderBy   = ['id' => 'desc', 'description' => 'asc' ];
 
-        return $this->repository->index($condition, $orderBy, request('limit'));
+        return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
 
     public function findById(Request $request)
@@ -35,11 +29,6 @@ class EventController extends Controller
         return $this->repository->findById($request->id);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         return $this->repository->store($request->json()->all());
@@ -54,5 +43,4 @@ class EventController extends Controller
     {
         return $this->repository->delete($request->id);
     }
-
 }
