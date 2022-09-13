@@ -23,4 +23,9 @@ class Client extends Model
         'cidade',
         'estado'
     ];
+
+    public function CronJob()
+    {
+        return $this->hasMany(CronJob::class, 'client_id', 'id');
+    }
 }
