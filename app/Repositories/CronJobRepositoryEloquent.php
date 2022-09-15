@@ -224,7 +224,7 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
                 }
             }
             
-            if($value->limit > 0)
+            if($flag == true && $value->limit > 0)
             {
                 if($value->limit >= $value->executed)
                 {
