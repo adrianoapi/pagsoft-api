@@ -167,14 +167,15 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
     public function run()
     {
         $result = $this->model::where('status', true)->get();
-        $flag   = true;
-        $today  = new \DateTime();
-
-        $today->modify('-3 hours'); # GMT-3
-        #$today->format('H:i:s');
 
         foreach($result as $value):
-          
+
+            $flag   = true;
+            $today  = new \DateTime();
+
+            $today->modify('-3 hours'); # GMT-3
+
+            #$today->format('H:i:s');
             /**
              * Checa se:
              * $flag é verdadeira, e
@@ -217,7 +218,7 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
                 $timeLink   = new \DateTime();
                 $timeLink   = $timeLink->setTime($nValueTime[0], $nValueTime[1], $nValueTime[2]);
 
-                echo "{$margemAnt->format('H:i:s')} {$timeLink->format('H:i:s')} {$margemPost->format('H:i:s')}<br>";
+                #echo "{$margemAnt->format('H:i:s')} {$timeLink->format('H:i:s')} {$margemPost->format('H:i:s')}<br>";
                 if($timeLink < $margemAnt || $timeLink > $margemPost)
                 {
                     $flag = false;
@@ -231,12 +232,12 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
                     $flag = false;
                 }
             }
-            var_dump($flag);
+            
             if($flag)
             {
                 $context = stream_context_create(['http' => ['ignore_errors' => true]]);
                 $result = file_get_contents($value->link, false, $context);
-                var_dump($result);
+                
                 $value->executed += 1;
                 $value->save();
             }
