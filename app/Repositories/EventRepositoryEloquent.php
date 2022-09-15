@@ -10,15 +10,44 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
 {
 	protected $model;
     protected $perPage = 160;
+    private $start;
+    private $end;
 
 	public function __construct(Event $model)
 	{
         $this->model = $model;
+        $this->start = date('Y-m-01');
+        $this->end   = date('Y-m-d');
 	}
 
-    public function index($condition, $orderBy, $limit)
+    public function index($request, $condition, $orderBy, $limit)
     {
-        return $this->findBy($condition, $orderBy, $limit);
+        $model = $this->model;
+        $model = $model->where('start', '>=', $request->start.' 00:00:00')
+                       ->where('start', '<=', $request->end.' 23:59:59');
+
+        if(!empty($orderBy)){
+            foreach ($orderBy as $order => $value) {
+                $model = $model->orderBy($order, $value);
+            }
+        }
+
+        if(!empty($limit))
+        {
+            if($limit > 0 && $limit <= 20){
+                $this->perPage =  (int)$limit;
+            }
+        }
+
+        if (!empty($offset)) {
+            $model = $model->skip((int)$offset);
+        }
+
+        $model = $model->paginate($this->perPage);
+
+        $model->appends(request()->input())->links();
+
+        return response()->json($model, 200);
     }
 
     public function store(array $data)

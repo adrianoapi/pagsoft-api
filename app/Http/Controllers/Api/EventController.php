@@ -22,12 +22,12 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $condition = ['title' => request('title')];
         $orderBy   = ['start' => 'asc' ];
 
-        return $this->repository->index($condition, $orderBy, request('limit'));
+        return $this->repository->index($request, $condition, $orderBy, request('limit'));
     }
 
     public function findById(Request $request)
