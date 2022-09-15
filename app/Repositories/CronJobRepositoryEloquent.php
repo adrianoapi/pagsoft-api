@@ -231,7 +231,7 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
                     $flag = false;
                 }
             }
-
+            var_dump($flag);
             if($flag)
             {
                 $context = stream_context_create(['http' => ['ignore_errors' => true]]);
