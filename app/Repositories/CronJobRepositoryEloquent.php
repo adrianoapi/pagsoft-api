@@ -202,17 +202,17 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
             */
             if($flag == true && $value->every_time != true && !empty($value->time))
             {
-                $today->modify('-10 minutes');
-                $menos10  = explode(":",$today->format('H:i:s')); # Armazena H min s -10min
+                $today->modify('-1 minutes');
+                $menos  = explode(":",$today->format('H:i:s')); # Armazena H min s -1min
 
-                $today->modify('+20 minutes');
-                $mais10   = explode(":",$today->format('H:i:s')); # Armazena H min s +10min
+                $today->modify('+2 minutes');
+                $mais   = explode(":",$today->format('H:i:s')); # Armazena H min s +1min
                 
                 $margemAnt  = new \DateTime();
-                $margemAnt  = $margemAnt->setTime($menos10[0], $menos10[1], $menos10[2]);
+                $margemAnt  = $margemAnt->setTime($menos[0], $menos[1], $menos[2]);
                 
                 $margemPost = new \DateTime();
-                $margemPost = $margemPost->setTime($mais10[0], $mais10[1], $mais10[2]);
+                $margemPost = $margemPost->setTime($mais[0], $mais[1], $mais[2]);
                 
                 $nValueTime = explode(":", $value->time);
                 $timeLink   = new \DateTime();
@@ -237,7 +237,7 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
             {
                 $context = stream_context_create(['http' => ['ignore_errors' => true]]);
                 $result = file_get_contents($value->link, false, $context);
-                
+
                 $value->executed += 1;
                 $value->save();
             }
