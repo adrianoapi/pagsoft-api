@@ -217,7 +217,7 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
                 $timeLink   = new \DateTime();
                 $timeLink   = $timeLink->setTime($nValueTime[0], $nValueTime[1], $nValueTime[2]);
 
-                #echo "{$margemAnt->format('H:i:s')} {$timeLink->format('H:i:s')} {$margemPost->format('H:i:s')}<br>";
+                echo "{$margemAnt->format('H:i:s')} {$timeLink->format('H:i:s')} {$margemPost->format('H:i:s')}<br>";
                 if($timeLink < $margemAnt || $timeLink > $margemPost)
                 {
                     $flag = false;
