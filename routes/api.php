@@ -24,6 +24,9 @@ Route::post('auth/login', 'Api\\AuthController@login');
 Route::get ('loto/resultado/{jogo}',  'Api\\LotoController@index');
 Route::get ('notify',  'Api\\NotifyController@index');
 
+# CronJob Public
+Route::get('cron-jobs/run',  'Api\\CronJobController@run');
+
 Route::group(['middleware' => ['apiJwt']], function(){
 
     Route::get ('auth/collection', 'Api\\UserController@getCollection');
@@ -70,7 +73,6 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::put ('collections/{id}',            'Api\\CollectionController@edit');
 
     Route::delete('collections/{id}', 'Api\\CollectionController@destroy');
-
 
     # password
     Route::get ('password/',                'Api\\PasswordController@index');

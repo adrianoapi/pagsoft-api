@@ -163,4 +163,84 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
             return response()->json(["message" => "Record Not Found!"], 404);
         }
     }
+
+    public function run()
+    {
+        $result = $this->model::where('status', true)->get();
+        $flag   = true;
+        $today  = new \DateTime();
+
+        $today->modify('-3 hours'); # GMT-3
+        #$today->format('H:i:s');
+
+        foreach($result as $value):
+          
+            /**
+             * Checa se:
+             * $flag é verdadeira, e
+             * $every_day é falso, e
+             * $date é diferente de vazio
+            */
+            if($flag == true && $value->every_day != true && !empty($value->date))
+            {
+                /**
+                 * Checa se:
+                 * $date é diferente de hoje
+                 */
+                if($value->date != $today->format('Y-m-d'))
+                {
+                    $flag = false;
+                }
+            }
+
+            /**
+             * Checa se:
+             * $flag é verdadeira, e
+             * $every_time é falso, e
+             * $time é diferente de vazio
+            */
+            if($flag == true && $value->every_time != true && !empty($value->time))
+            {
+                $today->modify('-10 minutes');
+                $menos10  = explode(":",$today->format('H:i:s')); # Armazena H min s -10min
+
+                $today->modify('+20 minutes');
+                $mais10   = explode(":",$today->format('H:i:s')); # Armazena H min s +10min
+                
+                $margemAnt  = new \DateTime();
+                $margemAnt  = $margemAnt->setTime($menos10[0], $menos10[1], $menos10[2]);
+                
+                $margemPost = new \DateTime();
+                $margemPost = $margemPost->setTime($mais10[0], $mais10[1], $mais10[2]);
+                
+                $nValueTime = explode(":", $value->time);
+                $timeLink   = new \DateTime();
+                $timeLink   = $timeLink->setTime($nValueTime[0], $nValueTime[1], $nValueTime[2]);
+
+                #echo "{$margemAnt->format('H:i:s')} {$timeLink->format('H:i:s')} {$margemPost->format('H:i:s')}<br>";
+                if($timeLink < $margemAnt || $timeLink > $margemPost)
+                {
+                    $flag = false;
+                }
+            }
+            
+            if($value->limit > 0)
+            {
+                if($value->limit >= $value->executed)
+                {
+                    $flag = false;
+                }
+            }
+
+            if($flag)
+            {
+                $context = stream_context_create(['http' => ['ignore_errors' => true]]);
+                $result = file_get_contents($value->link, false, $context);
+    
+                $value->executed += 1;
+                $value->save();
+            }
+
+        endforeach;
+    }
 }

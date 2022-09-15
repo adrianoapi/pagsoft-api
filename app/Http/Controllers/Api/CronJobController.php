@@ -43,4 +43,9 @@ class CronJobController extends Controller
     {
         return $this->repository->delete($request->id);
     }
+
+    public function run()
+    {
+        return $this->repository->run();
+    }
 }
