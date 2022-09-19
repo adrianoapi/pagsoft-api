@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+# CronJob Public
+Route::get('/cron-jobs/run',  'Api\\CronJobController@run');
 
 Route::get('/', function () {
     //return view('site.index');
