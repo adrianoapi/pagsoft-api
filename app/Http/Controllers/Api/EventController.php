@@ -55,4 +55,9 @@ class EventController extends Controller
         return $this->repository->delete($request->id);
     }
 
+    public function today()
+    {
+        return $this->repository->today();
+    }
+
 }

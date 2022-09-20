@@ -87,6 +87,16 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\CronJobRepositoryInterface',
             'App\Repositories\CronJobRepositoryEloquent'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\MessageRepositoryInterface',
+            'App\Repositories\MessageRepositoryEloquent'
+        );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\ActionRepositoryInterface',
+            'App\Repositories\ActionRepositoryEloquent'
+        );
     }
 
     /**

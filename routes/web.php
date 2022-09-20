@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 # CronJob Public
 Route::get('/cron-jobs/run',  'Api\\CronJobController@run');
+Route::get('/event/today',    'Api\\EventController@today');
 
 Route::get('/', function () {
     //return view('site.index');

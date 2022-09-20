@@ -22,8 +22,7 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
 
     public function index($request, $condition, $orderBy, $limit)
     {
-        $model = $this->model;
-        $model = $model->where('start', '>=', $request->start.' 00:00:00')
+        $model = $this->model->where('start', '>=', $request->start.' 00:00:00')
                        ->where('start', '<=', $request->end.' 23:59:59');
 
         if(!empty($orderBy)){
@@ -123,5 +122,41 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
         {
             return response()->json(["message" => "Record Not Found!"], 404);
         }
+    }
+
+    public function today()
+    {
+        $today  = new \DateTime();
+        $today->modify('-3 hours'); # GMT-3
+
+        $result = $this->model::where('message_id', false)
+                            ->where('start', '>=', $today->format('Y-m-d').' 00:00:00')
+                            ->where('start', '<=', $today->format('Y-m-d').' 23:59:59')
+                            ->get();
+
+        foreach($result as $event):
+
+            # Registra a mensagem
+            $message = new \App\Message();
+            $message->title = "Agenda Evento";
+            $message->body  = $event->title;
+            $message->type  = "email";
+
+            if($message->save())
+            {
+                # Relaciona o evento com a mensagem
+                $event->message_id = $message->id;
+                $event->save();
+
+                # Registra uma acao
+                $action = new \App\Action();
+                $action->user_id    =  $event->user_id;
+                $action->message_id =  $event->message_id;
+                $action->save();
+
+            }
+
+        endforeach;
+
     }
 }
