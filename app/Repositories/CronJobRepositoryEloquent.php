@@ -202,10 +202,10 @@ class CronJobRepositoryEloquent extends UtilEloquent implements CronJobRepositor
             */
             if($flag == true && $value->every_time != true && !empty($value->time))
             {
-                $today->modify('-1 minutes');
+                $today->modify('-30 seconds');
                 $menos  = explode(":",$today->format('H:i:s')); # Armazena H min s -1min
 
-                $today->modify('+2 minutes');
+                $today->modify('+60 seconds');
                 $mais   = explode(":",$today->format('H:i:s')); # Armazena H min s +1min
                 
                 $margemAnt  = new \DateTime();
