@@ -15,4 +15,9 @@ class Diagram extends Model
     {
         return $this->hasMany(DiagramLinkData::class, 'diagram_id', 'id');
     }
+
+    public function diagramClasses()
+    {
+        return $this->hasMany(DiagramClass::class, 'diagram_id', 'id');
+    }
 }

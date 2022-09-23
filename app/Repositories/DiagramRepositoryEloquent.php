@@ -30,11 +30,64 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
         if($model::where('id', $id)->where('user_id', auth('api')->user()->id)->exists())
         {
             $model = $this->model::findOrFail($id);
-            $data  = [
-                'diagram' => $model->attributesToArray(),
-                'items'   => $this->factoreStructure($model->items),
-                'linkData'   => $this->factoreStructure($model->linkData),
-            ];
+            if($model->type == "class")
+            {
+                $data = [];
+                $data['diagram'] = $model->attributesToArray();
+                $data['title'  ] = "class";
+                $data['type'   ] = "class";
+                
+                $nodedata = [];
+                foreach($model->diagramClasses as $value):
+
+                    $properties = [];
+                    foreach($value->diagramClassProperties as $valuePproperties):
+                        $properties[] = [
+                            "name"       => $valuePproperties["name"      ],
+                            "type"       => $valuePproperties["type"      ],
+                            "visibility" => $valuePproperties["visibility"]
+                        ];
+                    endforeach;
+
+                    $methods = [];
+                    foreach($value->diagramClassMethods as $valueMethods):
+
+                        $parameters = [];
+                        foreach($valueMethods->diagramClassMethodParameters as $valueParameters):
+                            $parameters[] = [
+                                "name" => $valueParameters["name"],
+                                "type" => $valueParameters["type"]
+                            ];
+                        endforeach;
+
+
+                        $methods[] = [
+                            "name"       => $valueMethods["name"      ],
+                            "visibility" => $valueMethods["visibility"],
+                            "parameters" => $parameters
+                        ];
+                    endforeach;
+
+                    $nodedata[] = [
+                        "key" => $value->key,
+                        "name" => $value->name,
+                        "properties" => $properties,
+                        "methods" => $methods
+                    ];
+
+                endforeach;
+
+                $data['body'] = [
+                    'nodedata'=> $nodedata
+                ];
+
+            }else{
+                $data  = [
+                    'diagram'    => $model->attributesToArray(),
+                    'items'      => $this->factoreStructure($model->items),
+                    'linkData'   => $this->factoreStructure($model->linkData),
+                ];
+            }
 
             return response()->json($data);
         }
@@ -82,7 +135,8 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
                         $modelItem->save();
 
                     endforeach;
-                }else{
+
+                }elseif($model->type == 'flowChart'){
 
                     foreach($item['linkDataArray'] as $value):
 
@@ -130,6 +184,56 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
 
                     endforeach;
 
+                }else{
+
+                    foreach($item['nodedata'] as $value):
+                        $modelClass             = new \App\DiagramClass();
+                        $modelClass->diagram_id = $model->id;
+                        $modelClass->key        = $value['key'];
+                        $modelClass->name       = $value['name'];
+
+                        if($modelClass->save())
+                        {
+                            if(array_key_exists("properties", $value))
+                            {
+                                foreach($value['properties'] as $property):
+                                    $modelClassProperty = new \App\DiagramClassProperty();
+                                    $modelClassProperty->diagram_class_id = $modelClass->id;
+                                    $modelClassProperty->name             = $property['name'];
+                                    $modelClassProperty->type             = $property['type'];
+                                    $modelClassProperty->visibility       = $property['visibility'];
+                                    $modelClassProperty->save();
+                                endforeach;
+                            }
+
+                            if(array_key_exists("methods", $value))
+                            {
+                                foreach($value['methods'] as $method):
+                                    $modelClassMethod = new \App\DiagramClassMethod();
+                                    $modelClassMethod->diagram_class_id = $modelClass->id;
+                                    $modelClassMethod->name             = $method['name'];
+                                    $modelClassMethod->visibility       = $method['visibility'];
+                                    
+                                    if($modelClassMethod->save())
+                                    {
+                                        if(array_key_exists("parameters", $method))
+                                        {
+                                            foreach($method['parameters'] as $parameter):
+                                                $modelClassMethodParameter = new \App\DiagramClassMethodParameter();
+                                                $modelClassMethodParameter->diagram_class_method_id = $modelClassMethod->id;
+                                                $modelClassMethodParameter->name                    = $parameter['name'];
+                                                $modelClassMethodParameter->type                    = $parameter['type'];
+                                                $modelClassMethodParameter->save();
+                                            endforeach;
+                                            
+                                        }
+                                   }
+
+                                endforeach;
+                            }
+                        }
+
+                    endforeach;
                 }
 
             }

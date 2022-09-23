@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Message;
+use App\Repositories\Contracts\MessageRepositoryInterface;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    private $repository;
+
+    public function __construct(MessageRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,11 @@ class MessageController extends Controller
      */
     public function index()
     {
-        //
+        die('oi');
+        $condition = ['status' => request('status')];
+        $orderBy   = ['name' => 'asc'];
+
+        return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
 
     /**

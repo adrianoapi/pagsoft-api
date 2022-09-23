@@ -38,6 +38,16 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::put   ('clients/{id}', 'Api\\ClientController@edit');
     Route::delete('clients/{id}', 'Api\\ClientController@destroy');
 
+    # client
+    Route::get   ('messages/',     'Api\\MessageController@index' );
+
+    # client
+    Route::get   ('clients/',     'Api\\ClientController@index' );
+    Route::get   ('clients/{id}', 'Api\\ClientController@findById');
+    Route::post  ('clients/',     'Api\\ClientController@create');
+    Route::put   ('clients/{id}', 'Api\\ClientController@edit');
+    Route::delete('clients/{id}', 'Api\\ClientController@destroy');
+
     # cronJob
     Route::get   ('cron-jobs/',     'Api\\CronJobController@index' );
     Route::get   ('cron-jobs/{id}', 'Api\\CronJobController@findById');
