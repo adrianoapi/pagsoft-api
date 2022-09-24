@@ -36,7 +36,16 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
                 $data['diagram'] = $model->attributesToArray();
                 $data['title'  ] = "class";
                 $data['type'   ] = "class";
-                
+
+                $linkData = [];
+                foreach($model->linkData as $value):
+                    $linkData[] = [
+                        "from"         => $value["from"        ],
+                        "to"           => $value["to"          ],
+                        "relationship" => $value["relationship"]
+                    ];
+                endforeach;
+
                 $nodedata = [];
                 foreach($model->diagramClasses as $value):
 
@@ -78,7 +87,8 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
                 endforeach;
 
                 $data['body'] = [
-                    'nodedata'=> $nodedata
+                    'nodedata'=> $nodedata,
+                    'linkData'=> $linkData
                 ];
 
             }else{
@@ -185,6 +195,15 @@ class DiagramRepositoryEloquent extends UtilEloquent implements DiagramRepositor
                     endforeach;
 
                 }else{
+
+                    foreach($item['linkdata'] as $value):
+                        $modelLinkData = new \App\DiagramLinkData();
+                        $modelLinkData->diagram_id = $model->id;
+                        $modelLinkData->from         = $value['from'        ];
+                        $modelLinkData->to           = $value['to'          ];
+                        $modelLinkData->relationship = $value['relationship'];
+                        $modelLinkData->save();
+                    endforeach;
 
                     foreach($item['nodedata'] as $value):
                         $modelClass             = new \App\DiagramClass();
