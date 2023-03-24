@@ -97,7 +97,8 @@ class CollectionRepositoryEloquent extends UtilEloquent implements CollectionRep
     {
         $model = $this->model;
         
-        $model = $model::select('collections.*')
+        $model = $model::select('collections.*',
+        'collection_sharings.id as collection_user_id')
         ->leftJoin('collection_sharings', function($join) {
             $join->on('collections.id', '=','collection_sharings.collection_id');
           })
