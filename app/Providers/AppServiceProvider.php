@@ -97,6 +97,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\ActionRepositoryInterface',
             'App\Repositories\ActionRepositoryEloquent'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\CollectionSharingRepositoryInterface',
+            'App\Repositories\CollectionSharingRepositoryEloquent'
+        );
     }
 
     /**
