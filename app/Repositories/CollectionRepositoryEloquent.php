@@ -27,11 +27,12 @@ class CollectionRepositoryEloquent extends UtilEloquent implements CollectionRep
             CollectionSharing::where('collection_id', $id)->where('user_id', auth('api')->user()->id)->exists()
         ){
             $model = $this->model::findOrFail($id);
+            $model->author = $model->user_id == auth('api')->user()->id;
             $data  = [
                 'collection' => $model->attributesToArray(),
                 'items'      => $this->factoreStructure($model->items, ['images']),
             ];
-
+            
             return response()->json($data);
         }
         else
