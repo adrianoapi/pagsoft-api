@@ -82,9 +82,8 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::delete('collections/{id}', 'Api\\CollectionController@destroy');
 
     
-    #Collection
+    #CollectionSharing
     Route::post('collection-sharings/{id}', 'Api\\CollectionSharingController@create');
-
     Route::delete('collection-sharings/{id}', 'Api\\CollectionSharingController@destroy');
 
     # password
