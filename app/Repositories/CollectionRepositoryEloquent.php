@@ -155,6 +155,7 @@ class CollectionRepositoryEloquent extends UtilEloquent implements CollectionRep
                     endforeach;
                 }
                 
+                $model->author = $model->user_id == auth('api')->user()->id;
                 return response()->json($model, 200);
             }
             catch(\Exception $e)
