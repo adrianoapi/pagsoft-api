@@ -23,7 +23,8 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
     public function index($request, $condition, $orderBy, $limit)
     {
         $model = $this->model->where('start', '>=', $request->start.' 00:00:00')
-                       ->where('start', '<=', $request->end.' 23:59:59');
+                       ->where('start', '<=', $request->end.' 23:59:59')
+                       ->where('user_id', auth('api')->user()->id);
 
         if(!empty($orderBy)){
             foreach ($orderBy as $order => $value) {
