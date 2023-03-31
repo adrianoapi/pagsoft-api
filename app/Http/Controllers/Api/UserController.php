@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
+use App\Repositories\Contracts\UserRepositoryInterface;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    private $repository;
+
+    public function __construct(UserRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +22,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return response()->json($users);
+        $condition = ['status' => request('status')];
+        $orderBy   = ['name' => 'asc'];
+
+        return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
 
     /**

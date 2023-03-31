@@ -29,6 +29,8 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get ('auth/collection', 'Api\\UserController@getCollection');
     Route::post('auth/logout',     'Api\\AuthController@logout');
     Route::get ('auth/me',         'Api\\AuthController@me');
+
+    # user
     Route::get ('users',           'Api\\UserController@index');
 
     # client
