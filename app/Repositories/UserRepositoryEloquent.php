@@ -18,20 +18,37 @@ class UserRepositoryEloquent extends UtilEloquent implements UserRepositoryInter
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
+        if(!empty($limit)){
+            $this->perPage = $limit;
+        }
+
         $model = $this->model;
         if($model::where('level','>', 0)->where('id', auth('api')->user()->id)->exists())
         {
             try{
-                $model = $this->model::get();
-
-                if(!empty($model) && !empty($relations))
-                {
-                    #Injeta os objetos relacionados a matriz
-                    foreach($relations as $relation):
-                        $model->$relation;
-                    endforeach;
-                }
+                $model = new $this->model();
                 
+                if(!empty($orderBy)){
+                    foreach ($orderBy as $order => $value) {
+                        $model = $model->orderBy($order, $value);
+                    }
+                }
+
+                if(!empty($limit))
+                {
+                    if($limit > 0 && $limit <= 20){
+                        $this->perPage =  (int)$limit;
+                    }
+                }
+        
+                if (!empty($offset)) {
+                    $model = $model->skip((int)$offset);
+                }
+        
+                $model = $model->paginate($this->perPage);
+        
+                $model->appends(request()->input())->links();
+        
                 return response()->json($model, 200);
             }
             catch(\Exception $e)
