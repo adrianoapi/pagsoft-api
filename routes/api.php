@@ -107,8 +107,9 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::delete('collectionItemImage/{id}', 'Api\\CollectionItemImageController@destroy');
     
     # Dashboard
-    Route::get ('dashbaord/finance', 'Api\\DashboardController@finance');
-    Route::get ('dashbaord/cart',    'Api\\DashboardController@cart');
+    Route::get ('dashbaord/finance',       'Api\\DashboardController@finance');
+    Route::get ('dashbaord/cart',          'Api\\DashboardController@cart');
+    Route::get ('dashbaord/finance/year',  'Api\\DashboardController@byYear');
     
     #Diagram
     Route::get ('diagram',        'Api\\DiagramController@index');

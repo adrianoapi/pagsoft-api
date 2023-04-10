@@ -91,6 +91,22 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    protected function byYear()
+    {
+        $expensive = DB::table('ledger_entries')
+        ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+        ->select(DB::raw('sum( ledger_entries.amount )/12 as total'), DB::raw("DATE_FORMAT(ledger_entries.entry_date, '%Y') dt_lancamento"))
+        ->where([
+            ['ledger_entries.user_id', $this->user_id],
+            ['ledger_entries.ledger_group_id', 8]
+        ])
+        ->groupBy('dt_lancamento')
+        ->orderByDesc('dt_lancamento', 'desc')
+        ->get();
+
+        return response()->json($expensive, 200);
+    }
+
     protected function legderSort($expensive, $recipe)
     {
         $dtLancamento    = array();
