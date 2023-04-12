@@ -91,9 +91,70 @@ class DashboardController extends Controller
         ], 200);
     }
 
-    protected function byYear()
+    protected function range(Request $request)
     {
-        $recipe = DB::table('ledger_entries')
+        if($request->type == "today")
+        {
+            $expensive = DB::table('ledger_entries')
+            ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+            ->select(DB::raw('sum( ledger_entries.amount ) as total'), 'ledger_entries.entry_date as dt_lancamento')
+            ->where([
+                ['ledger_entries.user_id', $this->user_id],
+                ['transition_types.action', 'expensive'],
+                ['transition_types.credit_card', '<>', true],
+                ['ledger_entries.entry_date', '>=', $this->date_begin],
+                ['ledger_entries.entry_date', '<=', $this->date_end]
+            ])
+            ->groupBy('ledger_entries.entry_date')
+            ->orderByDesc('ledger_entries.entry_date')
+            ->get();
+
+            $recipe = DB::table('ledger_entries')
+            ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+            ->select(DB::raw('sum( ledger_entries.amount ) as total'), 'ledger_entries.entry_date as dt_lancamento')
+            ->where([
+                ['transition_types.action', 'recipe'],
+                ['ledger_entries.entry_date', '>=', $this->date_begin],
+                ['ledger_entries.entry_date', '<=', $this->date_end]
+            ])
+            ->groupBy('ledger_entries.entry_date')
+            ->orderByDesc('ledger_entries.entry_date')
+            ->get();
+        }
+        elseif($request->type == "monthly")
+        {
+            $date_begin = date('Y-m-d', strtotime("$this->date_begin -1 year"));
+
+            $expensive = DB::table('ledger_entries')
+            ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+            ->select(DB::raw('sum( ledger_entries.amount ) as total'), DB::raw("DATE_FORMAT(ledger_entries.entry_date, '%Y-%m') dt_lancamento"))
+            ->where([
+                ['ledger_entries.user_id', $this->user_id],
+                ['transition_types.action', 'expensive'],
+                ['transition_types.credit_card', '<>', true],
+                ['ledger_entries.entry_date', '>=', $date_begin],
+                ['ledger_entries.entry_date', '<=', $this->date_end]
+            ])
+            ->groupBy('dt_lancamento')
+            ->orderByDesc('dt_lancamento')
+            ->get();
+
+            $recipe = DB::table('ledger_entries')
+            ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+            ->select(DB::raw('sum( ledger_entries.amount ) as total'), DB::raw("DATE_FORMAT(ledger_entries.entry_date, '%Y-%m') dt_lancamento"))
+            ->where([
+                ['ledger_entries.user_id', $this->user_id],
+                ['transition_types.action', 'recipe'],
+                ['ledger_entries.entry_date', '>=', $date_begin],
+                ['ledger_entries.entry_date', '<=', $this->date_end]
+            ])
+            ->groupBy('dt_lancamento')
+            ->orderByDesc('dt_lancamento')
+            ->get();
+        }
+        elseif($request->type == "annual")
+        {
+            $recipe = DB::table('ledger_entries')
             ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
             ->select(DB::raw('sum( ledger_entries.amount ) as total'), DB::raw('YEAR(ledger_entries.entry_date) dt_lancamento'))
             ->where([
@@ -104,16 +165,17 @@ class DashboardController extends Controller
             ->orderByDesc('dt_lancamento')
             ->get();
 
-        $expensive = DB::table('ledger_entries')
-            ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
-            ->select(DB::raw('sum( ledger_entries.amount ) as total'), DB::raw('YEAR(ledger_entries.entry_date) dt_lancamento'))
-            ->where([
-                ['transition_types.action', 'expensive'],
-                ['transition_types.credit_card', '<>', true]
-            ])
-            ->groupBy('dt_lancamento')
-            ->orderByDesc('dt_lancamento')
-            ->get();
+            $expensive = DB::table('ledger_entries')
+                ->join('transition_types', 'ledger_entries.transition_type_id', '=', 'transition_types.id')
+                ->select(DB::raw('sum( ledger_entries.amount ) as total'), DB::raw('YEAR(ledger_entries.entry_date) dt_lancamento'))
+                ->where([
+                    ['transition_types.action', 'expensive'],
+                    ['transition_types.credit_card', '<>', true]
+                ])
+                ->groupBy('dt_lancamento')
+                ->orderByDesc('dt_lancamento')
+                ->get();
+        }
 
         return response()->json([
             "recipe" => $recipe,
