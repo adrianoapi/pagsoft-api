@@ -177,10 +177,7 @@ class DashboardController extends Controller
                 ->get();
         }
 
-        return response()->json([
-            "recipe" => $recipe,
-            "expensive" => $expensive
-        ], 200);
+        return response()->json($this->legderSort($expensive, $recipe), 200);
     }
 
     protected function legderSort($expensive, $recipe)
