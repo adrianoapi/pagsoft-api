@@ -110,6 +110,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get ('dashbaord/finance',       'Api\\DashboardController@finance');
     Route::get ('dashbaord/cart',          'Api\\DashboardController@cart');
     Route::get ('dashbaord/finance/range/{type}', 'Api\\DashboardController@range');
+    Route::get ('dashbaord/finance/group/{type}', 'Api\\DashboardController@group');
     
     #Diagram
     Route::get ('diagram',        'Api\\DiagramController@index');

@@ -91,6 +91,66 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    
+    public function group(Request $request)
+    {
+        if($request->type == "today"){
+            $expensive = DB::table('ledger_entries AS le')
+            ->join('transition_types AS tt', 'le.transition_type_id', '=', 'tt.id')
+            ->join('ledger_groups AS lg', 'le.ledger_group_id', '=', 'lg.id')
+            ->join('ledger_groups AS parent', 'lg.ledger_group_id', '=', 'parent.id')
+            ->select(DB::raw('sum( le.amount ) as total'), 'parent.title')
+            ->where([
+                ['tt.action', 'expensive'],
+                ['le.entry_date', '>=', $this->date_begin],
+                ['le.entry_date', '<=', $this->date_end]
+            ])
+            ->orderBy('parent.title')
+            ->groupBy('parent.id')
+            ->get();
+        }
+
+        if($request->type == "monthly"){
+
+            $date_begin = date('Y-m-d', strtotime("$this->date_begin -1 year"));
+
+            $expensive = DB::table('ledger_entries AS le')
+            ->join('transition_types AS tt', 'le.transition_type_id', '=', 'tt.id')
+            ->join('ledger_groups AS lg', 'le.ledger_group_id', '=', 'lg.id')
+            ->join('ledger_groups AS parent', 'lg.ledger_group_id', '=', 'parent.id')
+            ->select(DB::raw('sum( le.amount ) as total'), 'parent.title')
+            ->where([
+                ['tt.action', 'expensive'],
+                ['le.entry_date', '>=', $date_begin],
+                ['le.entry_date', '<=', $this->date_end]
+            ])
+            ->orderBy('parent.title')
+            ->groupBy('parent.id')
+            ->get();
+        }
+
+        if($request->type == "annual"){
+
+            $date_begin = date('Y-m-d', strtotime("$this->date_begin -10 year"));
+
+            $expensive = DB::table('ledger_entries AS le')
+            ->join('transition_types AS tt', 'le.transition_type_id', '=', 'tt.id')
+            ->join('ledger_groups AS lg', 'le.ledger_group_id', '=', 'lg.id')
+            ->join('ledger_groups AS parent', 'lg.ledger_group_id', '=', 'parent.id')
+            ->select(DB::raw('sum( le.amount ) as total'), 'parent.title')
+            ->where([
+                ['tt.action', 'expensive'],
+                ['le.entry_date', '>=', $date_begin],
+                ['le.entry_date', '<=', $this->date_end]
+            ])
+            ->orderBy('parent.title')
+            ->groupBy('parent.id')
+            ->get();
+        }
+
+        return response()->json($expensive, 200);
+    }
+
     protected function range(Request $request)
     {
         if($request->type == "today")
