@@ -14,7 +14,7 @@ class AddColumnsToEvents extends Migration
     public function up()
     { 
         Schema::table('events', function (Blueprint $table) {
-            $table->boolean('repeat_day')->default(false);
+            $table->boolean('repeat_year')->default(false);
         });
     }
 
