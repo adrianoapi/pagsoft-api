@@ -32,8 +32,8 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
 
         $model = $this->model->select(
                 'events.*',
-                DB::raw('(CASE WHEN DATE_FORMAT(events.start, \'%Y\') <> \''.date('Y').'\' THEN DATE_FORMAT(events.start, \''.date('Y').'-%m-%d\') ELSE events.start END) as start'),
-                DB::raw('(CASE WHEN DATE_FORMAT(events.end, \'%Y\') <> \''.date('Y').'\' THEN DATE_FORMAT(events.end, \''.date('Y').'-%m-%d\') ELSE events.start END) as end'),
+                DB::raw('(CASE WHEN DATE_FORMAT(events.start, \'%Y\') <> \''.$year.'\' THEN DATE_FORMAT(events.start, \''.$year.'-%m-%d\') ELSE events.start END) as start'),
+                DB::raw('(CASE WHEN DATE_FORMAT(events.end, \'%Y\') <> \''.$year.'\' THEN DATE_FORMAT(events.end, \''.$year.'-%m-%d\') ELSE events.start END) as end'),
             )
             ->where('start', '>=', $request->start.' 00:00:00')
             ->where('start', '<=', $request->end.' 23:59:59')
