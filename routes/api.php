@@ -148,7 +148,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::delete('task/delete', 'Api\\TaskController@destroy');
 
     #EventController
-    Route::get ('event',      'Api\\EventController@index');
+    Route::get ('event/{start}/{end}',      'Api\\EventController@index');
     Route::get ('event/{id}', 'Api\\EventController@findById');
     Route::post('event',      'Api\\EventController@create');
     Route::put ('event/{id}', 'Api\\EventController@edit');

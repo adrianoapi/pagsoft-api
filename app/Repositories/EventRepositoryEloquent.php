@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Repositories\Contracts\EventRepositoryInterface;
 use App\Repositories\UtilEloquent;
 use App\Event;
+use Illuminate\Support\Facades\DB;
 
 class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInterface
 {
@@ -22,9 +23,23 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
 
     public function index($request, $condition, $orderBy, $limit)
     {
-        $model = $this->model->where('start', '>=', $request->start.' 00:00:00')
-                       ->where('start', '<=', $request->end.' 23:59:59')
-                       ->where('user_id', auth('api')->user()->id);
+        #Convert a string em tempo
+        $time = strtotime("$request->start");
+        $final = date("Y-m-d", strtotime("+1 month", $time));
+
+        $month = date("m",strtotime($final));
+        $year = date("Y",strtotime($final));
+
+        $model = $this->model->select(
+                'events.*',
+                DB::raw('(CASE WHEN DATE_FORMAT(events.start, \'%Y\') <> \''.date('Y').'\' THEN DATE_FORMAT(events.start, \''.date('Y').'-%m-%d\') ELSE events.start END) as start'),
+                DB::raw('(CASE WHEN DATE_FORMAT(events.end, \'%Y\') <> \''.date('Y').'\' THEN DATE_FORMAT(events.end, \''.date('Y').'-%m-%d\') ELSE events.start END) as end'),
+            )
+            ->where('start', '>=', $request->start.' 00:00:00')
+            ->where('start', '<=', $request->end.' 23:59:59')
+            ->orWhereMonth('start', $month)
+            ->where('repeat_year', true)
+            ->where('user_id', auth('api')->user()->id);
 
         if(!empty($orderBy)){
             foreach ($orderBy as $order => $value) {
