@@ -74,6 +74,7 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
             $model = $this->model;
             $model->user_id  = auth('api')->user()->id;
             $model->title    = $data['title'   ];
+            $model->icon     = $data['icon'    ];
             $model->start    = $data['start'   ];
             $model->end      = $data['end'     ];
             $model->editable = $data['editable'];
@@ -99,6 +100,7 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
             try{
                 $model = $this->model::findOrFail($id);
                 $model->title    = $data['title'   ];
+                $model->icon     = $data['icon'    ];
                 $model->start    = $data['start'   ];
                 $model->end      = $data['end'     ];
                 $model->editable = $data['editable'];
