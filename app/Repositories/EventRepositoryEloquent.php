@@ -25,15 +25,18 @@ class EventRepositoryEloquent extends UtilEloquent implements EventRepositoryInt
     {
         #Convert a string em tempo
         $time = strtotime("$request->start");
-        $final = date("Y-m-d", strtotime("+1 month", $time));
+        $dt_convertida = date("Y-m-d", strtotime($time));
 
+        $final = date("Y-m-d", strtotime("+1 month", $time));
         $month = date("m",strtotime($final));
-        $year = date("Y",strtotime($final));
+
+        //Pega o ano da data corrente para evitar bug da virada do ano no mês de dezembro
+        $year  = date("Y",strtotime($request->start));
 
         $model = $this->model->select(
                 'events.*',
-                DB::raw('(CASE WHEN DATE_FORMAT(events.start, \'%Y\') <> \''.$year.'\' THEN DATE_FORMAT(events.start, \''.$year.'-%m-%d\') ELSE events.start END) as start'),
-                DB::raw('(CASE WHEN DATE_FORMAT(events.end, \'%Y\') <> \''.$year.'\' THEN DATE_FORMAT(events.end, \''.$year.'-%m-%d\') ELSE events.start END) as end'),
+                DB::raw('(CASE WHEN DATE_FORMAT(events.start, \'%Y\') <> \''.$year.'\' AND repeat_year IS TRUE THEN DATE_FORMAT(events.start, \''.$year.'-%m-%d\') ELSE events.start END) as start'),
+                DB::raw('(CASE WHEN DATE_FORMAT(events.end, \'%Y\') <> \''.$year.'\' AND repeat_year IS TRUE  THEN DATE_FORMAT(events.end, \''.$year.'-%m-%d\') ELSE events.start END) as end'),
             )
             ->where('start', '>=', $request->start.' 00:00:00')
             ->where('start', '<=', $request->end.' 23:59:59')
