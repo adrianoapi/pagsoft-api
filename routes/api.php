@@ -156,7 +156,12 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::delete('event/{id}', 'Api\\EventController@destroy');
 
     #FileController
+    Route::get ('file',      'Api\\FileController@index');
+    Route::get ('file/{id}', 'Api\\FileController@findById');
     Route::post('file',      'Api\\FileController@create');
+    Route::put ('file/{id}', 'Api\\FileController@edit');
+
+    Route::delete('file/{id}', 'Api\\FileController@destroy');
 
 
     Route::get ('mania/sorteios',  'Api\\ManiaSorteioController@index');

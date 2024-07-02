@@ -18,8 +18,8 @@ class FileController extends Controller
 
     public function index()
     {
-        $condition = ['title' => request('title')];
-        $orderBy   = ['id' => 'desc', 'description' => 'asc' ];
+        $condition = ['name' => request('name')];
+        $orderBy   = ['id' => 'desc', 'name' => 'asc' ];
 
         return $this->repository->findBy($condition, $orderBy, request('limit'));
     }
