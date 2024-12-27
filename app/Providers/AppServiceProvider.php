@@ -107,6 +107,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\UserRepositoryInterface',
             'App\Repositories\UserRepositoryEloquent'
         );
+        
+        $this->app->bind(
+            'App\Repositories\Contracts\SqlCommandInterface',
+            'App\Repositories\SqlCommandEloquent'
+        );
 
         $this->app->bind(
             'App\Repositories\Contracts\FileRepositoryInterface',
