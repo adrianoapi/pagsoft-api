@@ -109,7 +109,7 @@ class AppServiceProvider extends ServiceProvider
         );
         
         $this->app->bind(
-            'App\Repositories\Contracts\SqlCommandInterface',
+            'App\Repositories\Contracts\SqlCommandRepositoryInterface',
             'App\Repositories\SqlCommandEloquent'
         );
 

@@ -166,5 +166,9 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
     Route::get ('mania/sorteios',  'Api\\ManiaSorteioController@index');
     Route::delete('mania/sorteios/{id}', 'Api\\ManiaSorteioController@destroy');
+    
+    #SqlCommandController
+    Route::get  ('sql-command', 'Api\\SqlCommandController@index');
+    Route::post ('sql-command', 'Api\\SqlCommandController@execute');
 
 });
